@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asset Library</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 2rem;
+            background: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        section {
+            margin-top: 2rem;
+        }
+        .asset-preview {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .asset-box {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 200px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<h1>📦 Static Asset Library</h1>
+<p>This page serves as a reference and preview for the hosted assets.</p>
+
+<section>
+    <h2>🎨 CSS Demo</h2>
+    <p class="styled-text">If your CSS is loaded correctly, this text should be styled.</p>
+</section>
+
+<section>
+    <h2>🖼️ Image Preview</h2>
+    <div class="asset-preview">
+        <div class="asset-box">
+            <img src="img/sample-image.jpg" alt="Sample Image" />
+            <p>sample-image.jpg</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>⚙️ JavaScript Test</h2>
+    <button onclick="sayHello()">Click me</button>
+    <p id="output"></p>
+</section>
+
+<script src="js/script.js"></script>
+<script>
+    function sayHello() {
+        document.getElementById('output').textContent = "✅ JS is working!";
+    }
+</script>
+</body>
+</html>
