@@ -1,0 +1,5 @@
+sudo k3s etcd-snapshot save \
+--s3 \
+--s3-bucket=k3s-etcd-backup \
+--s3-access-key=fh8Kd4aaXFg6ZR4ZakX5 \
+--s3-secret-key=ZEnsvLi6sU9vzfr5qbsNL38gB7UoaXoWSA3d7zxn --s3-endpoint=api-minio.pandia.io --s3-region=us-east-1

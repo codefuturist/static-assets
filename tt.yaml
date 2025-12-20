@@ -1,0 +1,8 @@
+etcd-snapshot-schedule-cron: "*/5 * * * *"
+etcd-snapshot-retention: 5
+etcd-s3: true
+etcd-s3-endpoint: 192.168.2.30:9000
+etcd-s3-bucket: k3s-etcd-backup
+etcd-s3-access-key: fh8Kd4aaXFg6ZR4ZakX5
+etcd-s3-secret-key: yZEnsvLi6sU9vzfr5qbsNL38gB7UoaXoWSA3d7zxn
+etcd-s3-skip-ssl-verify: true

@@ -1,0 +1,21 @@
+cluster-init: true
+datastore-endpoint: "etcd"
+
+etcd-s3: true
+etcd-s3-bucket: "k3s-etcd-backup"
+etcd-s3-endpoint: "192.168.2.30:9000"
+etcd-s3-access-key: "fh8Kd4aaXFg6ZR4ZakX5"
+etcd-s3-secret-key: "yZEnsvLi6sU9vzfr5qbsNL38gB7UoaXoWSA3d7zxn"
+etcd-s3-skip-ssl-verify: true
+
+etcd-snapshot-schedule-cron: "*/1 * * * *"
+etcd-snapshot-retention: 7
+
+cluster-init: true
+etcd-s3: true
+etcd-s3-bucket: k3s-etcd-backup
+etcd-s3-endpoint: minio.pandia.io:9000
+etcd-s3-access-key: fh8Kd4aaXFg6ZR4ZakX5
+etcd-s3-secret-key: yZEnsvLi6sU9vzfr5qbsNL38gB7UoaXoWSA3d7zxn
+etcd-snapshot-schedule-cron: */1 * * * *
+etcd-snapshot-retention: 7
