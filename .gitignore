@@ -238,3 +238,4 @@ $RECYCLE.BIN/
 .nfs*
 
 /_migration/
+sqlite_mcp_server.db
