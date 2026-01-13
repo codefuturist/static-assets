@@ -208,7 +208,12 @@ async function processBrand(brandName, brandConfig, config) {
         for (const svgFile of svgFiles) {
             const relativePath = path.relative(assetSourceDir, svgFile);
             const outputPath = path.join(assetOutputDir, relativePath);
+
+            // 1. Optimize and save SVG
             await processSvg(svgFile, outputPath, config);
+
+            // 2. Generate raster variants from SVG
+            await processRasterImage(svgFile, assetOutputDir, assetConfig, config);
         }
 
         // Process raster images
