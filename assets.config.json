@@ -1,0 +1,426 @@
+{
+    "$schema": "./scripts/assets.schema.json",
+    "sourceDir": "_source",
+    "outputDir": "assets/v1",
+    "defaults": {
+        "quality": {
+            "jpg": 85,
+            "png": 90,
+            "webp": 85,
+            "avif": 80
+        },
+        "formats": [
+            "original",
+            "webp"
+        ],
+        "sizes": []
+    },
+    "variants": {
+        "description": "Standard logo variant naming conventions",
+        "types": [
+            {
+                "suffix": "",
+                "description": "Primary/default version (transparent background)"
+            },
+            {
+                "suffix": "-dark",
+                "description": "Optimized for dark backgrounds (light-colored logo)"
+            },
+            {
+                "suffix": "-light",
+                "description": "Optimized for light backgrounds (dark-colored logo)"
+            },
+            {
+                "suffix": "-mono",
+                "description": "Single color/monochrome version"
+            },
+            {
+                "suffix": "-mono-dark",
+                "description": "Monochrome for dark backgrounds (white/light)"
+            },
+            {
+                "suffix": "-mono-light",
+                "description": "Monochrome for light backgrounds (black/dark)"
+            },
+            {
+                "suffix": "-knockout",
+                "description": "Reversed/inverted colors"
+            },
+            {
+                "suffix": "-on-dark",
+                "description": "With dark solid background"
+            },
+            {
+                "suffix": "-on-light",
+                "description": "With light solid background"
+            },
+            {
+                "suffix": "-on-brand",
+                "description": "With brand color background"
+            }
+        ],
+        "forms": [
+            {
+                "suffix": "",
+                "description": "Full lockup (icon + wordmark)"
+            },
+            {
+                "suffix": "-icon",
+                "description": "Icon/symbol only"
+            },
+            {
+                "suffix": "-wordmark",
+                "description": "Text/wordmark only"
+            },
+            {
+                "suffix": "-horizontal",
+                "description": "Horizontal layout"
+            },
+            {
+                "suffix": "-vertical",
+                "description": "Vertical/stacked layout"
+            },
+            {
+                "suffix": "-tagline",
+                "description": "Includes tagline/slogan"
+            }
+        ]
+    },
+    "presets": {
+        "favicons": [
+            {
+                "name": "16",
+                "width": 16,
+                "height": 16
+            },
+            {
+                "name": "32",
+                "width": 32,
+                "height": 32
+            },
+            {
+                "name": "48",
+                "width": 48,
+                "height": 48
+            },
+            {
+                "name": "64",
+                "width": 64,
+                "height": 64
+            },
+            {
+                "name": "96",
+                "width": 96,
+                "height": 96
+            },
+            {
+                "name": "128",
+                "width": 128,
+                "height": 128
+            },
+            {
+                "name": "192",
+                "width": 192,
+                "height": 192
+            },
+            {
+                "name": "256",
+                "width": 256,
+                "height": 256
+            },
+            {
+                "name": "512",
+                "width": 512,
+                "height": 512
+            }
+        ],
+        "appIcons": [
+            {
+                "name": "apple-touch",
+                "width": 180,
+                "height": 180
+            },
+            {
+                "name": "android-chrome-192",
+                "width": 192,
+                "height": 192
+            },
+            {
+                "name": "android-chrome-512",
+                "width": 512,
+                "height": 512
+            },
+            {
+                "name": "mstile-150",
+                "width": 150,
+                "height": 150
+            },
+            {
+                "name": "mstile-310",
+                "width": 310,
+                "height": 310
+            }
+        ],
+        "logos": [
+            {
+                "name": "xs",
+                "width": 32
+            },
+            {
+                "name": "sm",
+                "width": 64
+            },
+            {
+                "name": "md",
+                "width": 128
+            },
+            {
+                "name": "lg",
+                "width": 256
+            },
+            {
+                "name": "xl",
+                "width": 512
+            },
+            {
+                "name": "2xl",
+                "width": 1024
+            }
+        ],
+        "social": [
+            {
+                "name": "og",
+                "width": 1200,
+                "height": 630
+            },
+            {
+                "name": "twitter",
+                "width": 1200,
+                "height": 600
+            },
+            {
+                "name": "profile-sm",
+                "width": 200,
+                "height": 200
+            },
+            {
+                "name": "profile-md",
+                "width": 400,
+                "height": 400
+            },
+            {
+                "name": "profile-lg",
+                "width": 800,
+                "height": 800
+            }
+        ],
+        "hero": [
+            {
+                "name": "sm",
+                "width": 640
+            },
+            {
+                "name": "md",
+                "width": 1024
+            },
+            {
+                "name": "lg",
+                "width": 1280
+            },
+            {
+                "name": "xl",
+                "width": 1920
+            },
+            {
+                "name": "2xl",
+                "width": 2560
+            }
+        ],
+        "icons": [
+            {
+                "name": "16",
+                "width": 16
+            },
+            {
+                "name": "20",
+                "width": 20
+            },
+            {
+                "name": "24",
+                "width": 24
+            },
+            {
+                "name": "32",
+                "width": 32
+            },
+            {
+                "name": "40",
+                "width": 40
+            },
+            {
+                "name": "48",
+                "width": 48
+            },
+            {
+                "name": "64",
+                "width": 64
+            },
+            {
+                "name": "96",
+                "width": 96
+            }
+        ]
+    },
+    "brands": {
+        "rey-it-solutions": {
+            "logos": {
+                "sizes": [
+                    {
+                        "name": "16",
+                        "width": 16,
+                        "height": 16
+                    },
+                    {
+                        "name": "32",
+                        "width": 32,
+                        "height": 32
+                    },
+                    {
+                        "name": "48",
+                        "width": 48,
+                        "height": 48
+                    },
+                    {
+                        "name": "64",
+                        "width": 64,
+                        "height": 64
+                    },
+                    {
+                        "name": "96",
+                        "width": 96,
+                        "height": 96
+                    },
+                    {
+                        "name": "128",
+                        "width": 128,
+                        "height": 128
+                    },
+                    {
+                        "name": "180",
+                        "width": 180,
+                        "height": 180
+                    },
+                    {
+                        "name": "192",
+                        "width": 192,
+                        "height": 192
+                    },
+                    {
+                        "name": "256",
+                        "width": 256,
+                        "height": 256
+                    },
+                    {
+                        "name": "512",
+                        "width": 512,
+                        "height": 512
+                    },
+                    {
+                        "name": "1024",
+                        "width": 1024,
+                        "height": 1024
+                    },
+                    {
+                        "name": "og",
+                        "width": 1200,
+                        "height": 630
+                    }
+                ],
+                "formats": [
+                    "original",
+                    "webp",
+                    "avif",
+                    "png"
+                ],
+                "generateRetina": false
+            },
+            "icons": {
+                "sizes": [
+                    {
+                        "name": "16",
+                        "width": 16
+                    },
+                    {
+                        "name": "20",
+                        "width": 20
+                    },
+                    {
+                        "name": "24",
+                        "width": 24
+                    },
+                    {
+                        "name": "32",
+                        "width": 32
+                    },
+                    {
+                        "name": "40",
+                        "width": 40
+                    },
+                    {
+                        "name": "48",
+                        "width": 48
+                    },
+                    {
+                        "name": "64",
+                        "width": 64
+                    },
+                    {
+                        "name": "96",
+                        "width": 96
+                    }
+                ]
+            }
+        },
+        "technitium": {
+            "icons": {
+                "sizes": [
+                    {
+                        "name": "16",
+                        "width": 16
+                    },
+                    {
+                        "name": "32",
+                        "width": 32
+                    },
+                    {
+                        "name": "48",
+                        "width": 48
+                    },
+                    {
+                        "name": "64",
+                        "width": 64
+                    },
+                    {
+                        "name": "128",
+                        "width": 128
+                    }
+                ]
+            }
+        }
+    },
+    "svgo": {
+        "multipass": true,
+        "plugins": [
+            "preset-default",
+            "removeDimensions",
+            {
+                "name": "removeAttrs",
+                "params": {
+                    "attrs": [
+                        "data-name"
+                    ]
+                }
+            }
+        ]
+    }
+}
