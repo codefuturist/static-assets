@@ -233,6 +233,12 @@
     </div>
 
     <h2>🔗 CDN Usage</h2>
+    
+    <p style="margin-bottom: 1rem;">
+        <button id="cdn-toggle" onclick="toggleCdn()" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: #238636; border: 1px solid #30363d; color: #fff; border-radius: 6px; cursor: pointer;">
+            🌐 Using jsDelivr CDN (click to switch)
+        </button>
+    </p>
 
     <h3>GitHub Pages (Direct)</h3>
     <p>Served directly from this site - no external CDN:</p>
@@ -283,15 +289,39 @@
                 fullUrl = `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/${path}`;
             }
             navigator.clipboard.writeText(fullUrl).then(() => {
-                alert('Copied: ' + fullUrl);
+                // Update button text temporarily
+                event.target.textContent = '✓ Copied!';
+                event.target.style.background = '#238636';
+                setTimeout(() => {
+                    event.target.textContent = currentCdn === 'jsdelivr' ? 'Copy jsDelivr URL' : 'Copy GitHub URL';
+                    event.target.style.background = '#21262d';
+                }, 1500);
+            }).catch(err => {
+                // Fallback for browsers that don't support clipboard API
+                prompt('Copy this URL:', fullUrl);
             });
         }
 
         function toggleCdn() {
             currentCdn = currentCdn === 'jsdelivr' ? 'github' : 'jsdelivr';
-            document.getElementById('cdn-toggle').textContent =
-                currentCdn === 'jsdelivr' ? '📋 Copying jsDelivr URLs' : '📋 Copying GitHub Pages URLs';
+            const toggle = document.getElementById('cdn-toggle');
+            toggle.textContent = currentCdn === 'jsdelivr' 
+                ? '🌐 Using jsDelivr CDN (click to switch)' 
+                : '📄 Using GitHub Pages (click to switch)';
+            toggle.style.background = currentCdn === 'jsdelivr' ? '#238636' : '#1f6feb';
+            
+            // Update all copy buttons
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.textContent = currentCdn === 'jsdelivr' ? 'Copy jsDelivr URL' : 'Copy GitHub URL';
+            });
         }
+
+        // Initialize button text on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.textContent = 'Copy jsDelivr URL';
+            });
+        });
     </script>
 </body>
 
