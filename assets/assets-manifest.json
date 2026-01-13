@@ -1,0 +1,710 @@
+{
+  "generated": "2026-01-13T16:10:55.407Z",
+  "version": "v1",
+  "baseUrls": {
+    "github": "https://codefuturist.github.io/static-assets/",
+    "jsdelivr": "https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/"
+  },
+  "brands": [
+    {
+      "id": "rey-it-solutions",
+      "name": "Rey It Solutions",
+      "assetTypes": [
+        {
+          "type": "logos",
+          "assets": [
+            {
+              "id": "logo",
+              "name": "Logo",
+              "type": "logos",
+              "basePath": "v1/brands/rey-it-solutions/logos/logo",
+              "sizes": [
+                16,
+                32,
+                48,
+                64,
+                96,
+                128,
+                180,
+                192,
+                256,
+                512
+              ],
+              "formats": [
+                "avif",
+                "jpg",
+                "png",
+                "svg",
+                "webp"
+              ],
+              "files": [
+                {
+                  "file": "logo-128.avif",
+                  "format": "avif",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-128.avif"
+                },
+                {
+                  "file": "logo-128.jpg",
+                  "format": "jpg",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-128.jpg"
+                },
+                {
+                  "file": "logo-128.png",
+                  "format": "png",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-128.png"
+                },
+                {
+                  "file": "logo-128.svg",
+                  "format": "svg",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-128.svg"
+                },
+                {
+                  "file": "logo-128.webp",
+                  "format": "webp",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-128.webp"
+                },
+                {
+                  "file": "logo-16.avif",
+                  "format": "avif",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-16.avif"
+                },
+                {
+                  "file": "logo-16.jpg",
+                  "format": "jpg",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-16.jpg"
+                },
+                {
+                  "file": "logo-16.png",
+                  "format": "png",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-16.png"
+                },
+                {
+                  "file": "logo-16.svg",
+                  "format": "svg",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-16.svg"
+                },
+                {
+                  "file": "logo-16.webp",
+                  "format": "webp",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-16.webp"
+                },
+                {
+                  "file": "logo-180.avif",
+                  "format": "avif",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-180.avif"
+                },
+                {
+                  "file": "logo-180.jpg",
+                  "format": "jpg",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-180.jpg"
+                },
+                {
+                  "file": "logo-180.png",
+                  "format": "png",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-180.png"
+                },
+                {
+                  "file": "logo-180.svg",
+                  "format": "svg",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-180.svg"
+                },
+                {
+                  "file": "logo-180.webp",
+                  "format": "webp",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-180.webp"
+                },
+                {
+                  "file": "logo-192.avif",
+                  "format": "avif",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-192.avif"
+                },
+                {
+                  "file": "logo-192.jpg",
+                  "format": "jpg",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-192.jpg"
+                },
+                {
+                  "file": "logo-192.png",
+                  "format": "png",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-192.png"
+                },
+                {
+                  "file": "logo-192.svg",
+                  "format": "svg",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-192.svg"
+                },
+                {
+                  "file": "logo-192.webp",
+                  "format": "webp",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-192.webp"
+                },
+                {
+                  "file": "logo-256.avif",
+                  "format": "avif",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-256.avif"
+                },
+                {
+                  "file": "logo-256.jpg",
+                  "format": "jpg",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-256.jpg"
+                },
+                {
+                  "file": "logo-256.png",
+                  "format": "png",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-256.png"
+                },
+                {
+                  "file": "logo-256.svg",
+                  "format": "svg",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-256.svg"
+                },
+                {
+                  "file": "logo-256.webp",
+                  "format": "webp",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-256.webp"
+                },
+                {
+                  "file": "logo-32.avif",
+                  "format": "avif",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-32.avif"
+                },
+                {
+                  "file": "logo-32.jpg",
+                  "format": "jpg",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-32.jpg"
+                },
+                {
+                  "file": "logo-32.png",
+                  "format": "png",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-32.png"
+                },
+                {
+                  "file": "logo-32.svg",
+                  "format": "svg",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-32.svg"
+                },
+                {
+                  "file": "logo-32.webp",
+                  "format": "webp",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-32.webp"
+                },
+                {
+                  "file": "logo-48.avif",
+                  "format": "avif",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-48.avif"
+                },
+                {
+                  "file": "logo-48.jpg",
+                  "format": "jpg",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-48.jpg"
+                },
+                {
+                  "file": "logo-48.png",
+                  "format": "png",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-48.png"
+                },
+                {
+                  "file": "logo-48.svg",
+                  "format": "svg",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-48.svg"
+                },
+                {
+                  "file": "logo-48.webp",
+                  "format": "webp",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-48.webp"
+                },
+                {
+                  "file": "logo-512.avif",
+                  "format": "avif",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-512.avif"
+                },
+                {
+                  "file": "logo-512.png",
+                  "format": "png",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-512.png"
+                },
+                {
+                  "file": "logo-512.svg",
+                  "format": "svg",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-512.svg"
+                },
+                {
+                  "file": "logo-512.webp",
+                  "format": "webp",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-512.webp"
+                },
+                {
+                  "file": "logo-64.avif",
+                  "format": "avif",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-64.avif"
+                },
+                {
+                  "file": "logo-64.jpg",
+                  "format": "jpg",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-64.jpg"
+                },
+                {
+                  "file": "logo-64.png",
+                  "format": "png",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-64.png"
+                },
+                {
+                  "file": "logo-64.svg",
+                  "format": "svg",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-64.svg"
+                },
+                {
+                  "file": "logo-64.webp",
+                  "format": "webp",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-64.webp"
+                },
+                {
+                  "file": "logo-96.avif",
+                  "format": "avif",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-96.avif"
+                },
+                {
+                  "file": "logo-96.jpg",
+                  "format": "jpg",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-96.jpg"
+                },
+                {
+                  "file": "logo-96.png",
+                  "format": "png",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-96.png"
+                },
+                {
+                  "file": "logo-96.svg",
+                  "format": "svg",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-96.svg"
+                },
+                {
+                  "file": "logo-96.webp",
+                  "format": "webp",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-96.webp"
+                },
+                {
+                  "file": "logo.svg",
+                  "format": "svg",
+                  "size": null,
+                  "path": "v1/brands/rey-it-solutions/logos/logo.svg"
+                }
+              ]
+            },
+            {
+              "id": "logo-on-brand",
+              "name": "Logo On Brand",
+              "type": "logos",
+              "basePath": "v1/brands/rey-it-solutions/logos/logo-on-brand",
+              "sizes": [
+                16,
+                32,
+                48,
+                64,
+                96,
+                128,
+                180,
+                192,
+                256,
+                512
+              ],
+              "formats": [
+                "avif",
+                "png",
+                "svg",
+                "webp"
+              ],
+              "files": [
+                {
+                  "file": "logo-on-brand-128.avif",
+                  "format": "avif",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-128.avif"
+                },
+                {
+                  "file": "logo-on-brand-128.png",
+                  "format": "png",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-128.png"
+                },
+                {
+                  "file": "logo-on-brand-128.svg",
+                  "format": "svg",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-128.svg"
+                },
+                {
+                  "file": "logo-on-brand-128.webp",
+                  "format": "webp",
+                  "size": 128,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-128.webp"
+                },
+                {
+                  "file": "logo-on-brand-16.avif",
+                  "format": "avif",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-16.avif"
+                },
+                {
+                  "file": "logo-on-brand-16.png",
+                  "format": "png",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-16.png"
+                },
+                {
+                  "file": "logo-on-brand-16.svg",
+                  "format": "svg",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-16.svg"
+                },
+                {
+                  "file": "logo-on-brand-16.webp",
+                  "format": "webp",
+                  "size": 16,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-16.webp"
+                },
+                {
+                  "file": "logo-on-brand-180.avif",
+                  "format": "avif",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-180.avif"
+                },
+                {
+                  "file": "logo-on-brand-180.png",
+                  "format": "png",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-180.png"
+                },
+                {
+                  "file": "logo-on-brand-180.svg",
+                  "format": "svg",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-180.svg"
+                },
+                {
+                  "file": "logo-on-brand-180.webp",
+                  "format": "webp",
+                  "size": 180,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-180.webp"
+                },
+                {
+                  "file": "logo-on-brand-192.avif",
+                  "format": "avif",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-192.avif"
+                },
+                {
+                  "file": "logo-on-brand-192.png",
+                  "format": "png",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-192.png"
+                },
+                {
+                  "file": "logo-on-brand-192.svg",
+                  "format": "svg",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-192.svg"
+                },
+                {
+                  "file": "logo-on-brand-192.webp",
+                  "format": "webp",
+                  "size": 192,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-192.webp"
+                },
+                {
+                  "file": "logo-on-brand-256.avif",
+                  "format": "avif",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-256.avif"
+                },
+                {
+                  "file": "logo-on-brand-256.png",
+                  "format": "png",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-256.png"
+                },
+                {
+                  "file": "logo-on-brand-256.svg",
+                  "format": "svg",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-256.svg"
+                },
+                {
+                  "file": "logo-on-brand-256.webp",
+                  "format": "webp",
+                  "size": 256,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-256.webp"
+                },
+                {
+                  "file": "logo-on-brand-32.avif",
+                  "format": "avif",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-32.avif"
+                },
+                {
+                  "file": "logo-on-brand-32.png",
+                  "format": "png",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-32.png"
+                },
+                {
+                  "file": "logo-on-brand-32.svg",
+                  "format": "svg",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-32.svg"
+                },
+                {
+                  "file": "logo-on-brand-32.webp",
+                  "format": "webp",
+                  "size": 32,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-32.webp"
+                },
+                {
+                  "file": "logo-on-brand-48.avif",
+                  "format": "avif",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-48.avif"
+                },
+                {
+                  "file": "logo-on-brand-48.png",
+                  "format": "png",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-48.png"
+                },
+                {
+                  "file": "logo-on-brand-48.svg",
+                  "format": "svg",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-48.svg"
+                },
+                {
+                  "file": "logo-on-brand-48.webp",
+                  "format": "webp",
+                  "size": 48,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-48.webp"
+                },
+                {
+                  "file": "logo-on-brand-512.avif",
+                  "format": "avif",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-512.avif"
+                },
+                {
+                  "file": "logo-on-brand-512.png",
+                  "format": "png",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-512.png"
+                },
+                {
+                  "file": "logo-on-brand-512.svg",
+                  "format": "svg",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-512.svg"
+                },
+                {
+                  "file": "logo-on-brand-512.webp",
+                  "format": "webp",
+                  "size": 512,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-512.webp"
+                },
+                {
+                  "file": "logo-on-brand-64.avif",
+                  "format": "avif",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-64.avif"
+                },
+                {
+                  "file": "logo-on-brand-64.png",
+                  "format": "png",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-64.png"
+                },
+                {
+                  "file": "logo-on-brand-64.svg",
+                  "format": "svg",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-64.svg"
+                },
+                {
+                  "file": "logo-on-brand-64.webp",
+                  "format": "webp",
+                  "size": 64,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-64.webp"
+                },
+                {
+                  "file": "logo-on-brand-96.avif",
+                  "format": "avif",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-96.avif"
+                },
+                {
+                  "file": "logo-on-brand-96.png",
+                  "format": "png",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-96.png"
+                },
+                {
+                  "file": "logo-on-brand-96.svg",
+                  "format": "svg",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-96.svg"
+                },
+                {
+                  "file": "logo-on-brand-96.webp",
+                  "format": "webp",
+                  "size": 96,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand-96.webp"
+                },
+                {
+                  "file": "logo-on-brand.svg",
+                  "format": "svg",
+                  "size": null,
+                  "path": "v1/brands/rey-it-solutions/logos/logo-on-brand.svg"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "technitium",
+      "name": "Technitium",
+      "assetTypes": [
+        {
+          "type": "icons",
+          "assets": [
+            {
+              "id": "icon",
+              "name": "Icon",
+              "type": "icons",
+              "basePath": "v1/brands/technitium/icons/icon",
+              "sizes": [
+                16,
+                32,
+                48,
+                64,
+                128
+              ],
+              "formats": [
+                "png",
+                "webp"
+              ],
+              "files": [
+                {
+                  "file": "icon-128.png",
+                  "format": "png",
+                  "size": 128,
+                  "path": "v1/brands/technitium/icons/icon-128.png"
+                },
+                {
+                  "file": "icon-128.webp",
+                  "format": "webp",
+                  "size": 128,
+                  "path": "v1/brands/technitium/icons/icon-128.webp"
+                },
+                {
+                  "file": "icon-16.png",
+                  "format": "png",
+                  "size": 16,
+                  "path": "v1/brands/technitium/icons/icon-16.png"
+                },
+                {
+                  "file": "icon-16.webp",
+                  "format": "webp",
+                  "size": 16,
+                  "path": "v1/brands/technitium/icons/icon-16.webp"
+                },
+                {
+                  "file": "icon-32.png",
+                  "format": "png",
+                  "size": 32,
+                  "path": "v1/brands/technitium/icons/icon-32.png"
+                },
+                {
+                  "file": "icon-32.webp",
+                  "format": "webp",
+                  "size": 32,
+                  "path": "v1/brands/technitium/icons/icon-32.webp"
+                },
+                {
+                  "file": "icon-48.png",
+                  "format": "png",
+                  "size": 48,
+                  "path": "v1/brands/technitium/icons/icon-48.png"
+                },
+                {
+                  "file": "icon-48.webp",
+                  "format": "webp",
+                  "size": 48,
+                  "path": "v1/brands/technitium/icons/icon-48.webp"
+                },
+                {
+                  "file": "icon-64.png",
+                  "format": "png",
+                  "size": 64,
+                  "path": "v1/brands/technitium/icons/icon-64.png"
+                },
+                {
+                  "file": "icon-64.webp",
+                  "format": "webp",
+                  "size": 64,
+                  "path": "v1/brands/technitium/icons/icon-64.webp"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

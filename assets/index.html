@@ -2,336 +2,798 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Static Assets Library</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Assets | Brand Asset Browser</title>
+    <meta name="description" content="Browse, search, and download brand assets in various formats and sizes">
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fuse.js for fuzzy search -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+
     <style>
-        * {
-            box-sizing: border-box;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 2rem;
-            background: #0d1117;
-            color: #c9d1d9;
-            line-height: 1.6;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        h1 {
-            color: #58a6ff;
-            margin-bottom: 0.5rem;
-        }
-
-        h2 {
-            color: #8b949e;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 0.5rem;
-            margin-top: 2.5rem;
-        }
-
-        h3 {
-            color: #c9d1d9;
-            margin-top: 1.5rem;
-        }
-
-        p {
-            color: #8b949e;
-        }
-
-        a {
-            color: #58a6ff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        code {
-            background: #161b22;
-            padding: 0.2rem 0.4rem;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
             border-radius: 4px;
-            font-size: 0.9em;
-            color: #79c0ff;
         }
 
-        .asset-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
         }
 
-        .asset-card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            transition: border-color 0.2s;
+        /* Transitions */
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .asset-card:hover {
-            border-color: #58a6ff;
+        .card-hover:hover {
+            transform: translateY(-2px);
         }
 
-        .asset-card img {
-            max-width: 100%;
-            max-height: 120px;
-            object-fit: contain;
-            margin-bottom: 0.75rem;
-            background: #fff;
-            border-radius: 4px;
-            padding: 0.5rem;
+        /* Checkerboard pattern for transparency */
+        .checkerboard {
+            background-image:
+                linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+                linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+                linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
         }
 
-        .asset-card .filename {
-            font-size: 0.85rem;
-            color: #c9d1d9;
-            word-break: break-all;
+        .dark .checkerboard {
+            background-image:
+                linear-gradient(45deg, #334155 25%, transparent 25%),
+                linear-gradient(-45deg, #334155 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #334155 75%),
+                linear-gradient(-45deg, transparent 75%, #334155 75%);
         }
 
-        .asset-card .path {
-            font-size: 0.75rem;
-            color: #6e7681;
-            margin-top: 0.25rem;
+        /* Toast animation */
+        @keyframes slideIn {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .btn-group {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            justify-content: center;
+        @keyframes slideOut {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(100%);
+                opacity: 0;
+            }
         }
 
-        .copy-btn {
-            padding: 0.3rem 0.5rem;
-            font-size: 0.7rem;
-            background: #21262d;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
+        .toast-enter {
+            animation: slideIn 0.3s ease-out;
         }
 
-        .copy-btn:hover {
-            background: #30363d;
+        .toast-exit {
+            animation: slideOut 0.3s ease-in forwards;
         }
 
-        .copy-btn.github:hover {
-            background: #1f6feb;
-            border-color: #1f6feb;
+        /* Modal backdrop */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
         }
 
-        .copy-btn.jsdelivr:hover {
-            background: #238636;
-            border-color: #238636;
+        /* Format badge colors */
+        .badge-svg {
+            background-color: #8b5cf6;
         }
 
-        .structure {
-            background: #161b22;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            border: 1px solid #30363d;
+        .badge-png {
+            background-color: #3b82f6;
         }
 
-        .structure pre {
-            margin: 0;
-            color: #8b949e;
+        .badge-webp {
+            background-color: #10b981;
         }
 
-        footer {
-            margin-top: 3rem;
-            padding-top: 1rem;
-            border-top: 1px solid #30363d;
-            color: #6e7681;
-            font-size: 0.85rem;
+        .badge-avif {
+            background-color: #f59e0b;
+        }
+
+        .badge-jpg {
+            background-color: #ef4444;
         }
     </style>
 </head>
 
-<body>
-    <h1>📦 Static Assets Library</h1>
-    <p>CDN-ready public assets served via GitHub Pages and jsDelivr.</p>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+    <div id="app">
+        <!-- Header -->
+        <header
+            class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <!-- Logo & Title -->
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Static Assets</h1>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Brand Asset Browser</p>
+                        </div>
+                    </div>
 
-    <h2>📁 Structure</h2>
-    <div class="structure">
-        <pre>assets/
-└── v1/
-    ├── brands/
-    │   ├── rey-it-solutions/
-    │   │   └── logos/
-    │   └── technitium/
-    │       └── icons/
-    └── shared/
-        ├── css/
-        ├── js/
-        ├── fonts/
-        └── icons/</pre>
+                    <!-- Search -->
+                    <div class="flex-1 max-w-xl">
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input type="search" id="searchInput" placeholder="Search assets..."
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-100 dark:bg-gray-700 border-0 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-gray-600 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center gap-2">
+                        <!-- Background Toggle -->
+                        <button id="bgToggle"
+                            class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                            title="Toggle preview background">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
+                                </path>
+                            </svg>
+                        </button>
+
+                        <!-- Dark Mode Toggle -->
+                        <button id="darkModeToggle"
+                            class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                            title="Toggle dark mode">
+                            <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                                </path>
+                            </svg>
+                            <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                        </button>
+
+                        <!-- GitHub Link -->
+                        <a href="https://github.com/codefuturist/static-assets" target="_blank"
+                            class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                            title="View on GitHub">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filters -->
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400 mr-2">Filters:</span>
+
+                    <!-- Brand Filters -->
+                    <div id="brandFilters" class="flex flex-wrap gap-2"></div>
+
+                    <div class="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+
+                    <!-- Type Filters -->
+                    <div id="typeFilters" class="flex flex-wrap gap-2"></div>
+
+                    <div class="flex-1"></div>
+
+                    <!-- Results Count -->
+                    <span id="resultsCount" class="text-sm text-gray-500 dark:text-gray-400"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Asset Grid -->
+            <div id="assetGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Assets will be rendered here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <svg class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-1">No assets found</h3>
+                <p class="text-gray-500 dark:text-gray-400">Try adjusting your search or filters</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center py-16">
+                <div
+                    class="inline-block w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin">
+                </div>
+                <p class="mt-4 text-gray-500 dark:text-gray-400">Loading assets...</p>
+            </div>
+        </main>
     </div>
 
-    <h2>🏷️ Rey IT Solutions</h2>
+    <!-- Modal -->
+    <div id="modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="modal-backdrop fixed inset-0" onclick="closeModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div
+                class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                    <div>
+                        <h3 id="modalTitle" class="text-xl font-semibold text-gray-900 dark:text-white"></h3>
+                        <p id="modalSubtitle" class="text-sm text-gray-500 dark:text-gray-400 mt-1"></p>
+                    </div>
+                    <button onclick="closeModal()"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
 
-    <h3>Logo Variants (SVG Originals)</h3>
-    <div class="asset-grid">
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo.svg" alt="Logo - Default" />
-            <div class="filename">logo.svg</div>
-            <div class="path">v1/brands/rey-it-solutions/logos/</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo.svg', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo.svg', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo-on-brand.svg" alt="Logo - On Brand Background" />
-            <div class="filename">logo-on-brand.svg</div>
-            <div class="path">v1/brands/rey-it-solutions/logos/</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo-on-brand.svg', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo-on-brand.svg', this)">🌐 jsDelivr</button>
+                <!-- Modal Content -->
+                <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+                    <!-- Preview -->
+                    <div id="modalPreview"
+                        class="flex items-center justify-center p-8 rounded-xl mb-6 transition-colors">
+                        <img id="modalImage" src="" alt="" class="max-w-full max-h-64 object-contain">
+                    </div>
+
+                    <!-- Options -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Format</label>
+                            <select id="modalFormat"
+                                class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500">
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Size</label>
+                            <select id="modalSize"
+                                class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500">
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- URLs -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <span class="inline-flex items-center gap-2">
+                                    <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                                        <path
+                                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                                    </svg>
+                                    GitHub Pages URL
+                                </span>
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="text" id="modalGithubUrl" readonly
+                                    class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-sm text-gray-600 dark:text-gray-300 font-mono">
+                                <button onclick="copyUrl('github')"
+                                    class="px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-sm font-medium">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <span class="inline-flex items-center gap-2">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M11.851.006l-.025.002L6.287 1.49a.5.5 0 00-.29.195L.49 9.186a.5.5 0 00-.086.274v5.072a.5.5 0 00.086.274l5.507 7.502a.5.5 0 00.29.195l5.539 1.481a.5.5 0 00.285-.01l5.424-1.886a.5.5 0 00.275-.207l5.208-7.504a.5.5 0 00.082-.26V9.14a.5.5 0 00-.087-.273L17.504.686a.5.5 0 00-.29-.195L11.675.01a.5.5 0 00-.026-.004h-.025a.5.5 0 00-.026 0h-.025a.5.5 0 00-.026 0h-.025a.5.5 0 00-.026 0h-.025a.5.5 0 00-.026 0h-.025a.5.5 0 00-.026 0h-.025a.5.5 0 00-.026.002l-.026.002-.025.002zm-.37 1.013l4.89 1.307-4.89 1.902V2.019zm-1 0v3.209l-4.89-1.902 4.89-1.307zM6.078 3.55l5.403 2.102v5.71l-5.403-3.12V3.55zm12.844 0v4.692l-5.403 3.12v-5.71l5.403-2.102zM5.078 4.55v4.193L1.5 11.293V6.55l3.578-2zm14.844 0l3.578 2v4.743l-3.578-2.55V4.55zm-8.44 4.085l5.036 2.908-5.037 3.483-5.036-3.483 5.036-2.908zm-5.403 4.121l5.403 3.737v5.286l-5.403-3.12v-5.903zm10.843 0v5.903l-5.44 3.12v-5.286l5.44-3.737zM5.078 13.757l5.403 3.12v4.604l-4.903-1.31-3.078-4.192v-2.222h2.578zm14.844 0v2.222l-3.078 4.192-4.903 1.31v-4.604l5.403-3.12h2.578z" />
+                                    </svg>
+                                    jsDelivr CDN URL
+                                </span>
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="text" id="modalJsdelivrUrl" readonly
+                                    class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-sm text-gray-600 dark:text-gray-300 font-mono">
+                                <button onclick="copyUrl('jsdelivr')"
+                                    class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+                    <button onclick="downloadAsset()"
+                        class="px-6 py-2.5 bg-brand-500 text-white rounded-lg hover:bg-brand-600 transition-colors font-medium inline-flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Download
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <h3>Sample Size Variants (PNG - 64px, 128px, 256px)</h3>
-    <div class="asset-grid">
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo-64.png" alt="Logo 64px" />
-            <div class="filename">logo-64.png</div>
-            <div class="path">Available: 16, 32, 48, 64, 96, 128, 180, 192, 256, 512px</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo-64.png', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo-64.png', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo-128.png" alt="Logo 128px" />
-            <div class="filename">logo-128.png</div>
-            <div class="path">Formats: PNG, WebP, AVIF, SVG</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo-128.png', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo-128.png', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo-on-brand-128.png" alt="Logo On-Brand 128px" />
-            <div class="filename">logo-on-brand-128.png</div>
-            <div class="path">All variants available in multiple sizes</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo-on-brand-128.png', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo-on-brand-128.png', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-    </div>
-
-    <h3>Modern Formats (WebP & AVIF)</h3>
-    <div class="asset-grid">
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo-128.webp" alt="Logo WebP" />
-            <div class="filename">logo-128.webp</div>
-            <div class="path">Modern web format, smaller file size</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo-128.webp', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo-128.webp', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-        <div class="asset-card">
-            <img src="v1/brands/rey-it-solutions/logos/logo-128.avif" alt="Logo AVIF" />
-            <div class="filename">logo-128.avif</div>
-            <div class="path">Newest format, best compression</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/rey-it-solutions/logos/logo-128.avif', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/rey-it-solutions/logos/logo-128.avif', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-    </div>
-
-    <h2>🔧 Technitium</h2>
-    <div class="asset-grid">
-        <div class="asset-card">
-            <img src="v1/brands/technitium/icons/icon-64.png" alt="Technitium Icon" />
-            <div class="filename">icon-64.png</div>
-            <div class="path">v1/brands/technitium/icons/</div>
-            <div class="btn-group">
-                <button class="copy-btn github" onclick="copyGitHub('v1/brands/technitium/icons/icon-64.png', this)">📄 GitHub</button>
-                <button class="copy-btn jsdelivr" onclick="copyJsDelivr('v1/brands/technitium/icons/icon-64.png', this)">🌐 jsDelivr</button>
-            </div>
-        </div>
-    </div>
-
-    <h2>🔗 CDN Usage</h2>
-
-    <h3>GitHub Pages (Direct)</h3>
-    <p>Served directly from this site - no external CDN:</p>
-    <p><code>https://codefuturist.github.io/static-assets/v1/brands/rey-it-solutions/logos/logo.svg</code></p>
-
-    <h3>jsDelivr CDN (Recommended - Faster, Global Cache)</h3>
-    <p>Production-ready with global edge caching:</p>
-    <p><code>https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/v1/brands/rey-it-solutions/logos/logo-128.png</code>
-    </p>
-
-    <h3>URL Patterns</h3>
-    <table style="width:100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
-        <tr style="border-bottom: 1px solid #30363d;">
-            <th style="text-align: left; padding: 0.5rem; color: #8b949e;">Provider</th>
-            <th style="text-align: left; padding: 0.5rem; color: #8b949e;">Base URL</th>
-        </tr>
-        <tr style="border-bottom: 1px solid #21262d;">
-            <td style="padding: 0.5rem;">GitHub Pages</td>
-            <td style="padding: 0.5rem;"><code>https://codefuturist.github.io/static-assets/</code></td>
-        </tr>
-        <tr>
-            <td style="padding: 0.5rem;">jsDelivr CDN</td>
-            <td style="padding: 0.5rem;">
-                <code>https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/</code>
-            </td>
-        </tr>
-    </table>
-
-    <h3>Available Sizes</h3>
-    <p>All logos available in: <code>16, 32, 48, 64, 96, 128, 180, 192, 256, 512px</code></p>
-
-    <h3>Available Formats</h3>
-    <p><code>.svg</code> (vector), <code>.png</code> (standard), <code>.webp</code> (modern), <code>.avif</code>
-        (newest)</p>
-
-    <footer>
-        <p>📖 See <a href="../docs/ARCHITECTURE.md">Architecture Documentation</a> for naming conventions and
-            guidelines.</p>
-    </footer>
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
 
     <script>
-        function copyToClipboard(url, btn, originalText) {
-            navigator.clipboard.writeText(url).then(() => {
-                btn.textContent = '✓ Copied!';
-                btn.style.background = '#238636';
-                btn.style.borderColor = '#238636';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '';
-                    btn.style.borderColor = '';
-                }, 1500);
-            }).catch(() => {
-                prompt('Copy this URL:', url);
+        // ─────────────────────────────────────────────────────────────────────
+        // State
+        // ─────────────────────────────────────────────────────────────────────
+        let manifest = null;
+        let fuse = null;
+        let allAssets = [];
+        let filteredAssets = [];
+        let selectedBrands = new Set();
+        let selectedTypes = new Set();
+        let previewBg = 'checkerboard'; // 'checkerboard', 'light', 'dark'
+        let currentAsset = null;
+
+        const BASE_URLS = {
+            github: 'https://codefuturist.github.io/static-assets/',
+            jsdelivr: 'https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/'
+        };
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Initialization
+        // ─────────────────────────────────────────────────────────────────────
+        async function init() {
+            // Load manifest
+            try {
+                const res = await fetch('assets-manifest.json');
+                manifest = await res.json();
+
+                // Flatten assets for search
+                allAssets = [];
+                for (const brand of manifest.brands) {
+                    for (const assetType of brand.assetTypes) {
+                        for (const asset of assetType.assets) {
+                            allAssets.push({
+                                ...asset,
+                                brandId: brand.id,
+                                brandName: brand.name,
+                                assetType: assetType.type
+                            });
+                        }
+                    }
+                }
+
+                // Initialize Fuse.js
+                fuse = new Fuse(allAssets, {
+                    keys: ['name', 'brandName', 'type', 'id'],
+                    threshold: 0.4,
+                    ignoreLocation: true
+                });
+
+                // Setup filters
+                setupFilters();
+
+                // Initial render
+                filterAndRender();
+
+                // Hide loading
+                document.getElementById('loadingState').classList.add('hidden');
+
+            } catch (err) {
+                console.error('Failed to load manifest:', err);
+                document.getElementById('loadingState').innerHTML = `
+                    <svg class="w-16 h-16 mx-auto text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <p class="text-red-500">Failed to load assets manifest</p>
+                `;
+            }
+
+            // Setup event listeners
+            document.getElementById('searchInput').addEventListener('input', debounce(filterAndRender, 200));
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+            document.getElementById('bgToggle').addEventListener('click', cyclePreviewBg);
+
+            // Check for dark mode preference
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+
+            // Modal event listeners
+            document.getElementById('modalFormat').addEventListener('change', updateModalUrls);
+            document.getElementById('modalSize').addEventListener('change', updateModalUrls);
+
+            // ESC to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
             });
         }
 
-        function copyGitHub(path, btn) {
-            const url = `https://codefuturist.github.io/static-assets/${path}`;
-            copyToClipboard(url, btn, '📄 GitHub');
+        // ─────────────────────────────────────────────────────────────────────
+        // Filters
+        // ─────────────────────────────────────────────────────────────────────
+        function setupFilters() {
+            const brandFilters = document.getElementById('brandFilters');
+            const typeFilters = document.getElementById('typeFilters');
+
+            // Get unique brands
+            const brands = [...new Set(allAssets.map(a => a.brandId))];
+            const types = [...new Set(allAssets.map(a => a.assetType))];
+
+            brands.forEach(brand => {
+                const btn = createFilterChip(brand, 'brand');
+                brandFilters.appendChild(btn);
+            });
+
+            types.forEach(type => {
+                const btn = createFilterChip(type, 'type');
+                typeFilters.appendChild(btn);
+            });
         }
 
-        function copyJsDelivr(path, btn) {
-            const url = `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/${path}`;
-            copyToClipboard(url, btn, '🌐 jsDelivr');
+        function createFilterChip(value, filterType) {
+            const btn = document.createElement('button');
+            btn.className = 'px-3 py-1.5 text-sm font-medium rounded-full border transition-all';
+            btn.textContent = value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            btn.dataset.value = value;
+            btn.dataset.filterType = filterType;
+
+            updateChipStyle(btn, false);
+
+            btn.addEventListener('click', () => {
+                const set = filterType === 'brand' ? selectedBrands : selectedTypes;
+                if (set.has(value)) {
+                    set.delete(value);
+                    updateChipStyle(btn, false);
+                } else {
+                    set.add(value);
+                    updateChipStyle(btn, true);
+                }
+                filterAndRender();
+            });
+
+            return btn;
         }
+
+        function updateChipStyle(btn, active) {
+            if (active) {
+                btn.className = 'px-3 py-1.5 text-sm font-medium rounded-full border border-brand-500 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 transition-all';
+            } else {
+                btn.className = 'px-3 py-1.5 text-sm font-medium rounded-full border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500 transition-all';
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Filtering & Rendering
+        // ─────────────────────────────────────────────────────────────────────
+        function filterAndRender() {
+            const query = document.getElementById('searchInput').value.trim();
+
+            // Start with all assets or search results
+            if (query) {
+                filteredAssets = fuse.search(query).map(r => r.item);
+            } else {
+                filteredAssets = [...allAssets];
+            }
+
+            // Apply filters
+            if (selectedBrands.size > 0) {
+                filteredAssets = filteredAssets.filter(a => selectedBrands.has(a.brandId));
+            }
+            if (selectedTypes.size > 0) {
+                filteredAssets = filteredAssets.filter(a => selectedTypes.has(a.assetType));
+            }
+
+            renderAssets();
+        }
+
+        function renderAssets() {
+            const grid = document.getElementById('assetGrid');
+            const emptyState = document.getElementById('emptyState');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.textContent = `${filteredAssets.length} asset${filteredAssets.length !== 1 ? 's' : ''}`;
+
+            if (filteredAssets.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filteredAssets.map(asset => createAssetCard(asset)).join('');
+        }
+
+        function createAssetCard(asset) {
+            const previewFile = asset.files.find(f => f.format === 'svg')
+                || asset.files.find(f => f.format === 'png' && f.size === 128)
+                || asset.files.find(f => f.format === 'png')
+                || asset.files[0];
+
+            const previewUrl = BASE_URLS.github + previewFile.path;
+            const bgClass = getPreviewBgClass();
+
+            return `
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden card-hover cursor-pointer" onclick="openModal('${asset.brandId}', '${asset.assetType}', '${asset.id}')">
+                    <!-- Preview -->
+                    <div class="aspect-square ${bgClass} flex items-center justify-center p-8 relative overflow-hidden">
+                        <img 
+                            src="${previewUrl}" 
+                            alt="${asset.name}"
+                            class="max-w-full max-h-full object-contain transition-transform group-hover:scale-105"
+                            loading="lazy"
+                        >
+                        
+                        <!-- Quick actions overlay -->
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-white/5 transition-colors"></div>
+                    </div>
+                    
+                    <!-- Info -->
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 dark:text-white truncate">${asset.name}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">${asset.brandName} • ${asset.assetType}</p>
+                        
+                        <!-- Format badges -->
+                        <div class="flex flex-wrap gap-1.5 mt-3">
+                            ${asset.formats.map(f => `
+                                <span class="px-2 py-0.5 text-xs font-medium text-white rounded badge-${f}">${f.toUpperCase()}</span>
+                            `).join('')}
+                        </div>
+                        
+                        <!-- Sizes -->
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                            ${asset.sizes.length > 0 ? `${asset.sizes.length} sizes (${asset.sizes[0]}–${asset.sizes[asset.sizes.length - 1]}px)` : 'Vector'}
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Modal
+        // ─────────────────────────────────────────────────────────────────────
+        function openModal(brandId, assetType, assetId) {
+            currentAsset = allAssets.find(a =>
+                a.brandId === brandId && a.assetType === assetType && a.id === assetId
+            );
+
+            if (!currentAsset) return;
+
+            // Set title
+            document.getElementById('modalTitle').textContent = currentAsset.name;
+            document.getElementById('modalSubtitle').textContent = `${currentAsset.brandName} • ${currentAsset.assetType}`;
+
+            // Populate format dropdown
+            const formatSelect = document.getElementById('modalFormat');
+            formatSelect.innerHTML = currentAsset.formats.map(f =>
+                `<option value="${f}">${f.toUpperCase()}</option>`
+            ).join('');
+
+            // Populate size dropdown
+            const sizeSelect = document.getElementById('modalSize');
+            const sizes = currentAsset.sizes.length > 0 ? currentAsset.sizes : [null];
+            sizeSelect.innerHTML = sizes.map(s =>
+                `<option value="${s || 'original'}">${s ? s + 'px' : 'Original (Vector)'}</option>`
+            ).join('');
+
+            // Set preview background
+            document.getElementById('modalPreview').className = `flex items-center justify-center p-8 rounded-xl mb-6 transition-colors ${getPreviewBgClass()}`;
+
+            // Update URLs
+            updateModalUrls();
+
+            // Show modal
+            document.getElementById('modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentAsset = null;
+        }
+
+        function updateModalUrls() {
+            if (!currentAsset) return;
+
+            const format = document.getElementById('modalFormat').value;
+            const sizeVal = document.getElementById('modalSize').value;
+            const size = sizeVal === 'original' ? null : parseInt(sizeVal, 10);
+
+            // Find matching file
+            const file = currentAsset.files.find(f =>
+                f.format === format && f.size === size
+            );
+
+            if (!file) {
+                // Try to find any file with this format
+                const fallback = currentAsset.files.find(f => f.format === format);
+                if (fallback) {
+                    document.getElementById('modalGithubUrl').value = BASE_URLS.github + fallback.path;
+                    document.getElementById('modalJsdelivrUrl').value = BASE_URLS.jsdelivr + fallback.path;
+                    document.getElementById('modalImage').src = BASE_URLS.github + fallback.path;
+                }
+                return;
+            }
+
+            document.getElementById('modalGithubUrl').value = BASE_URLS.github + file.path;
+            document.getElementById('modalJsdelivrUrl').value = BASE_URLS.jsdelivr + file.path;
+            document.getElementById('modalImage').src = BASE_URLS.github + file.path;
+        }
+
+        function copyUrl(type) {
+            const input = type === 'github'
+                ? document.getElementById('modalGithubUrl')
+                : document.getElementById('modalJsdelivrUrl');
+
+            navigator.clipboard.writeText(input.value).then(() => {
+                showToast(`${type === 'github' ? 'GitHub Pages' : 'jsDelivr'} URL copied!`, 'success');
+            }).catch(() => {
+                showToast('Failed to copy URL', 'error');
+            });
+        }
+
+        function downloadAsset() {
+            const url = document.getElementById('modalGithubUrl').value;
+            const filename = url.split('/').pop();
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            showToast('Download started', 'success');
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Preview Background
+        // ─────────────────────────────────────────────────────────────────────
+        function getPreviewBgClass() {
+            switch (previewBg) {
+                case 'light': return 'bg-white';
+                case 'dark': return 'bg-gray-900';
+                default: return 'checkerboard';
+            }
+        }
+
+        function cyclePreviewBg() {
+            const order = ['checkerboard', 'light', 'dark'];
+            const idx = order.indexOf(previewBg);
+            previewBg = order[(idx + 1) % order.length];
+
+            // Re-render cards
+            renderAssets();
+
+            // Update modal if open
+            if (currentAsset) {
+                document.getElementById('modalPreview').className = `flex items-center justify-center p-8 rounded-xl mb-6 transition-colors ${getPreviewBgClass()}`;
+            }
+
+            showToast(`Preview: ${previewBg} background`, 'info');
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Dark Mode
+        // ─────────────────────────────────────────────────────────────────────
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Toast
+        // ─────────────────────────────────────────────────────────────────────
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-brand-500'
+            };
+
+            toast.className = `${colors[type]} text-white px-4 py-3 rounded-xl shadow-lg toast-enter flex items-center gap-2`;
+
+            const icons = {
+                success: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`,
+                error: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`,
+                info: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+            };
+
+            toast.innerHTML = `${icons[type]}<span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Utilities
+        // ─────────────────────────────────────────────────────────────────────
+        function debounce(fn, delay) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn(...args), delay);
+            };
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Start
+        // ─────────────────────────────────────────────────────────────────────
+        init();
     </script>
 </body>
 

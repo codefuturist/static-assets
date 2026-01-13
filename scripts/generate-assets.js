@@ -225,6 +225,121 @@ async function processBrand(brandName, brandConfig, config) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Manifest Generation
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function generateManifest(config) {
+    const outputDir = path.join(ROOT_DIR, config.outputDir);
+    const brandsDir = path.join(outputDir, 'brands');
+
+    const manifest = {
+        generated: new Date().toISOString(),
+        version: 'v1',
+        baseUrls: {
+            github: 'https://codefuturist.github.io/static-assets/',
+            jsdelivr: 'https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/'
+        },
+        brands: []
+    };
+
+    // Scan brands directory
+    const brandDirs = await fs.readdir(brandsDir, { withFileTypes: true });
+
+    for (const brandEntry of brandDirs) {
+        if (!brandEntry.isDirectory()) continue;
+
+        const brandId = brandEntry.name;
+        const brandPath = path.join(brandsDir, brandId);
+        const brand = {
+            id: brandId,
+            name: brandId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+            assetTypes: []
+        };
+
+        // Scan asset type directories (logos, icons, images)
+        const assetTypeDirs = await fs.readdir(brandPath, { withFileTypes: true });
+
+        for (const typeEntry of assetTypeDirs) {
+            if (!typeEntry.isDirectory()) continue;
+
+            const assetType = typeEntry.name;
+            const typePath = path.join(brandPath, assetType);
+            const files = await fs.readdir(typePath);
+
+            // Group files by base asset name
+            const assetGroups = {};
+
+            for (const file of files) {
+                const ext = path.extname(file).toLowerCase();
+                if (!['.svg', '.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) continue;
+
+                const baseName = path.basename(file, ext);
+                // Parse: logo-on-brand-128 -> { name: 'logo-on-brand', size: 128 }
+                // Parse: logo-128 -> { name: 'logo', size: 128 }
+                // Parse: logo -> { name: 'logo', size: null }
+                const sizeMatch = baseName.match(/^(.+?)-(\d+)$/);
+                let assetName, size;
+
+                if (sizeMatch) {
+                    assetName = sizeMatch[1];
+                    size = parseInt(sizeMatch[2], 10);
+                } else {
+                    assetName = baseName;
+                    size = null;
+                }
+
+                if (!assetGroups[assetName]) {
+                    assetGroups[assetName] = {
+                        id: assetName,
+                        name: assetName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                        type: assetType,
+                        basePath: `v1/brands/${brandId}/${assetType}/${assetName}`,
+                        sizes: new Set(),
+                        formats: new Set(),
+                        files: []
+                    };
+                }
+
+                const format = ext.slice(1);
+                assetGroups[assetName].formats.add(format);
+                if (size) assetGroups[assetName].sizes.add(size);
+                assetGroups[assetName].files.push({
+                    file,
+                    format,
+                    size,
+                    path: `v1/brands/${brandId}/${assetType}/${file}`
+                });
+            }
+
+            // Convert Sets to sorted arrays
+            const assets = Object.values(assetGroups).map(group => ({
+                ...group,
+                sizes: Array.from(group.sizes).sort((a, b) => a - b),
+                formats: Array.from(group.formats).sort()
+            }));
+
+            if (assets.length > 0) {
+                brand.assetTypes.push({
+                    type: assetType,
+                    assets
+                });
+            }
+        }
+
+        if (brand.assetTypes.length > 0) {
+            manifest.brands.push(brand);
+        }
+    }
+
+    // Write manifest to parent assets/ directory (where index.html lives)
+    const manifestPath = path.join(ROOT_DIR, 'assets', 'assets-manifest.json');
+    await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+    log(`Generated assets-manifest.json`, 'success');
+
+    return manifest;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Main
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -247,6 +362,10 @@ async function main() {
         if (brandFilter && brandName !== brandFilter) continue;
         await processBrand(brandName, brandConfig, config);
     }
+
+    // Generate manifest for the asset browser
+    log('\n📋 Generating asset manifest...');
+    await generateManifest(config);
 
     log('\n✨ Asset generation complete!\n');
 }
