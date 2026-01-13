@@ -6,6 +6,9 @@
     "scripts": {
         "build": "node scripts/generate-assets.js",
         "build:brand": "node scripts/generate-assets.js --brand",
+        "dev": "node scripts/watch.js",
+        "validate": "node scripts/validate.js",
+        "new-brand": "node scripts/new-brand.js",
         "catalog": "node scripts/generate-catalog.js",
         "clean": "rm -rf assets/v1/brands/*/generated",
         "prepare": "npm run build && npm run hooks:install",

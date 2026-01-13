@@ -1,0 +1,206 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Static Assets Configuration",
+    "description": "Configuration schema for the static-assets build pipeline",
+    "type": "object",
+    "required": ["sourceDir", "outputDir", "brands"],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "Path to this schema file for editor validation"
+        },
+        "sourceDir": {
+            "type": "string",
+            "description": "Source directory containing brand assets",
+            "default": "_source"
+        },
+        "outputDir": {
+            "type": "string",
+            "description": "Output directory for generated assets",
+            "default": "assets/v1"
+        },
+        "defaults": {
+            "type": "object",
+            "description": "Default settings applied to all brands",
+            "properties": {
+                "quality": {
+                    "type": "object",
+                    "description": "Compression quality settings per format (0-100)",
+                    "properties": {
+                        "jpg": { "type": "integer", "minimum": 1, "maximum": 100, "default": 85 },
+                        "png": { "type": "integer", "minimum": 1, "maximum": 100, "default": 90 },
+                        "webp": { "type": "integer", "minimum": 1, "maximum": 100, "default": 85 },
+                        "avif": { "type": "integer", "minimum": 1, "maximum": 100, "default": 80 }
+                    }
+                },
+                "formats": {
+                    "type": "array",
+                    "description": "Default output formats",
+                    "items": {
+                        "type": "string",
+                        "enum": ["original", "png", "jpg", "webp", "avif"]
+                    },
+                    "default": ["original", "webp"]
+                },
+                "sizes": {
+                    "type": "array",
+                    "description": "Default size presets",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                }
+            }
+        },
+        "variants": {
+            "type": "object",
+            "description": "Documentation of variant naming conventions",
+            "properties": {
+                "description": { "type": "string" },
+                "types": {
+                    "type": "array",
+                    "description": "Color/background variant suffixes",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "suffix": { "type": "string" },
+                            "description": { "type": "string" }
+                        },
+                        "required": ["suffix", "description"]
+                    }
+                },
+                "forms": {
+                    "type": "array",
+                    "description": "Layout/composition variant suffixes",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "suffix": { "type": "string" },
+                            "description": { "type": "string" }
+                        },
+                        "required": ["suffix", "description"]
+                    }
+                }
+            }
+        },
+        "presets": {
+            "type": "object",
+            "description": "Reusable size preset collections",
+            "properties": {
+                "favicons": {
+                    "type": "array",
+                    "description": "Favicon size presets",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                },
+                "appIcons": {
+                    "type": "array",
+                    "description": "Mobile app icon presets",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                },
+                "logos": {
+                    "type": "array",
+                    "description": "Logo size presets (xs to 2xl)",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                },
+                "social": {
+                    "type": "array",
+                    "description": "Social media image presets",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                },
+                "hero": {
+                    "type": "array",
+                    "description": "Hero/banner image presets",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                },
+                "icons": {
+                    "type": "array",
+                    "description": "UI icon size presets",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                }
+            }
+        },
+        "brands": {
+            "type": "object",
+            "description": "Brand-specific configurations",
+            "additionalProperties": {
+                "$ref": "#/definitions/brandConfig"
+            }
+        },
+        "svgo": {
+            "type": "object",
+            "description": "SVGO optimization settings",
+            "properties": {
+                "multipass": { "type": "boolean", "default": true },
+                "plugins": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "name": { "type": "string" },
+                                    "params": { "type": "object" }
+                                },
+                                "required": ["name"]
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "sizePreset": {
+            "type": "object",
+            "description": "Size configuration for asset generation",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Size identifier used in filename (e.g., '32', 'og', 'apple-touch')"
+                },
+                "width": {
+                    "type": "integer",
+                    "description": "Target width in pixels",
+                    "minimum": 1
+                },
+                "height": {
+                    "type": "integer",
+                    "description": "Target height in pixels (optional, maintains aspect ratio if omitted)",
+                    "minimum": 1
+                }
+            },
+            "required": ["name", "width"]
+        },
+        "brandConfig": {
+            "type": "object",
+            "description": "Configuration for a single brand",
+            "properties": {
+                "logos": { "$ref": "#/definitions/assetTypeConfig" },
+                "icons": { "$ref": "#/definitions/assetTypeConfig" },
+                "images": { "$ref": "#/definitions/assetTypeConfig" }
+            }
+        },
+        "assetTypeConfig": {
+            "type": "object",
+            "description": "Configuration for an asset type (logos, icons, images)",
+            "properties": {
+                "sizes": {
+                    "type": "array",
+                    "description": "Size presets for this asset type",
+                    "items": { "$ref": "#/definitions/sizePreset" }
+                },
+                "formats": {
+                    "type": "array",
+                    "description": "Output formats for this asset type",
+                    "items": {
+                        "type": "string",
+                        "enum": ["original", "png", "jpg", "webp", "avif"]
+                    }
+                },
+                "generateRetina": {
+                    "type": "boolean",
+                    "description": "Generate @2x retina versions",
+                    "default": false
+                }
+            }
+        }
+    }
+}

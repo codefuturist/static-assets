@@ -13,6 +13,8 @@
  *   npm run build:assets           # Process all assets
  *   npm run build:assets -- --brand rey-it-solutions  # Process single brand
  *   npm run build:assets -- --watch  # Watch for changes
+ *   
+ *   scripts/generate-assets.js
  */
 
 import fs from 'fs/promises';
