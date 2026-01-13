@@ -17,19 +17,16 @@ on:
 # Permissions required for Pages deployment
 permissions:
     contents: read
-    pages: write
-    id-token: write
-
-# IMPORTANT: Do NOT cancel in-progress deployments
-# This prevents the issue where rapid commits cancel active deploys
-concurrency:
-    group: pages-deploy
-    cancel-in-progress: false
 
 jobs:
     # Build using reusable workflow
     build:
         name: Build
+        # Cancel superseded builds so only the latest commit builds.
+        # This reduces overall queue time without risking a cancelled deploy.
+        concurrency:
+            group: pages-build
+            cancel-in-progress: true
         uses: ./.github/workflows/build.yml
         with:
             upload-artifact: true
@@ -39,7 +36,15 @@ jobs:
         name: Deploy
         needs: build
         runs-on: ubuntu-latest
-        timeout-minutes: 20
+        timeout-minutes: 30
+        # Only the deploy job needs Pages + OIDC permissions.
+        permissions:
+            pages: write
+            id-token: write
+        # Never cancel an in-progress deploy; queue instead.
+        concurrency:
+            group: pages-deploy
+            cancel-in-progress: false
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
@@ -48,4 +53,4 @@ jobs:
               id: deployment
               uses: actions/deploy-pages@v4
               with:
-                timeout: 1200000
+                  timeout: 1200000
