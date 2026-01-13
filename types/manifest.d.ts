@@ -15,13 +15,13 @@
 export interface AssetManifest {
     /** ISO 8601 timestamp of when the manifest was generated */
     generated: string;
-    
+
     /** Asset API version (e.g., "v1") */
     version: string;
-    
+
     /** Base URLs for different CDN options */
     baseUrls: BaseUrls;
-    
+
     /** Array of available brands */
     brands: Brand[];
 }
@@ -32,7 +32,7 @@ export interface AssetManifest {
 export interface BaseUrls {
     /** GitHub Pages URL */
     github: string;
-    
+
     /** jsDelivr CDN URL */
     jsdelivr: string;
 }
@@ -43,10 +43,10 @@ export interface BaseUrls {
 export interface Brand {
     /** Unique brand identifier (kebab-case, e.g., "rey-it-solutions") */
     id: string;
-    
+
     /** Human-readable brand name (e.g., "Rey IT Solutions") */
     name: string;
-    
+
     /** Array of asset type categories */
     assetTypes: AssetTypeGroup[];
 }
@@ -57,7 +57,7 @@ export interface Brand {
 export interface AssetTypeGroup {
     /** Asset type identifier */
     type: AssetType;
-    
+
     /** Array of assets in this category */
     assets: Asset[];
 }
@@ -73,22 +73,22 @@ export type AssetType = 'logos' | 'icons' | 'images';
 export interface Asset {
     /** Unique asset identifier within its type (e.g., "logo", "logo-on-brand") */
     id: string;
-    
+
     /** Human-readable asset name (e.g., "Logo On Brand") */
     name: string;
-    
+
     /** Asset type category */
     type: AssetType;
-    
+
     /** Base path for constructing URLs (without size/format suffix) */
     basePath: string;
-    
+
     /** Available sizes in pixels (empty for vector-only assets) */
     sizes: number[];
-    
+
     /** Available file formats */
     formats: AssetFormat[];
-    
+
     /** Array of all available file variants */
     files: AssetFile[];
 }
@@ -104,13 +104,13 @@ export type AssetFormat = 'svg' | 'png' | 'webp' | 'avif' | 'jpg';
 export interface AssetFile {
     /** Filename including extension */
     file: string;
-    
+
     /** File format */
     format: AssetFormat;
-    
+
     /** Size in pixels (null for original/vector) */
     size: number | null;
-    
+
     /** Relative path from assets root (e.g., "v1/brands/acme/logos/logo-128.png") */
     path: string;
 }
@@ -122,10 +122,10 @@ export interface AssetFile {
 /**
  * Construct a full URL for an asset file
  */
-export type AssetUrl<T extends 'github' | 'jsdelivr'> = 
-    T extends 'github' 
-        ? `https://codefuturist.github.io/static-assets/${string}`
-        : `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/${string}`;
+export type AssetUrl<T extends 'github' | 'jsdelivr'> =
+    T extends 'github'
+    ? `https://codefuturist.github.io/static-assets/${string}`
+    : `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/${string}`;
 
 /**
  * Find assets by brand ID

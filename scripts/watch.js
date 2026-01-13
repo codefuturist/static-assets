@@ -67,9 +67,9 @@ function runBuild() {
 
     isBuilding = true;
     log('Building assets...', 'info');
-    
+
     const startTime = Date.now();
-    
+
     const build = spawn('node', ['scripts/generate-assets.js'], {
         cwd: ROOT_DIR,
         stdio: 'inherit'
@@ -78,13 +78,13 @@ function runBuild() {
     build.on('close', code => {
         isBuilding = false;
         const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-        
+
         if (code === 0) {
             log(`Build completed in ${duration}s`, 'success');
         } else {
             log(`Build failed with code ${code}`, 'error');
         }
-        
+
         console.log('');
         log('Watching for changes...', 'watch');
     });
@@ -97,10 +97,10 @@ function runBuild() {
 
 function debouncedBuild(changedFile) {
     clearTimeout(debounceTimer);
-    
+
     const relPath = path.relative(ROOT_DIR, changedFile);
     log(`Changed: ${colors.cyan}${relPath}${colors.reset}`, 'info');
-    
+
     debounceTimer = setTimeout(runBuild, DEBOUNCE_MS);
 }
 
@@ -112,14 +112,14 @@ function watchDirectory(dir) {
     try {
         fs.watch(dir, { recursive: true }, (eventType, filename) => {
             if (!filename) return;
-            
+
             const ext = path.extname(filename).toLowerCase();
             if (!VALID_EXTENSIONS.includes(ext)) return;
-            
+
             const fullPath = path.join(dir, filename);
             debouncedBuild(fullPath);
         });
-        
+
         log(`Watching: ${colors.dim}${path.relative(ROOT_DIR, dir)}${colors.reset}`, 'watch');
     } catch (err) {
         log(`Failed to watch ${dir}: ${err.message}`, 'error');
