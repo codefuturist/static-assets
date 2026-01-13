@@ -106,7 +106,7 @@ async function validateNaming(filePath) {
 
 async function validateResolution(filePath, assetType) {
     const ext = path.extname(filePath).toLowerCase();
-    
+
     // Skip SVGs
     if (ext === '.svg') return;
 
@@ -132,10 +132,10 @@ async function validateRequiredFiles(brandDir, assetType) {
     if (!patterns) return;
 
     const typeDir = path.join(brandDir, assetType);
-    
+
     try {
         const files = await fs.readdir(typeDir);
-        
+
         for (const pattern of patterns) {
             const hasMatch = files.some(f => pattern.test(f));
             if (!hasMatch) {
@@ -152,7 +152,7 @@ async function validateRequiredFiles(brandDir, assetType) {
 
 async function validateBrandDirectory(brandId, brandConfig, sourceDir) {
     const brandDir = path.join(sourceDir, 'brands', brandId);
-    
+
     // Check if source directory exists
     try {
         await fs.access(brandDir);
@@ -166,10 +166,10 @@ async function validateBrandDirectory(brandId, brandConfig, sourceDir) {
 
     for (const assetType of configuredTypes) {
         const typeDir = path.join(brandDir, assetType);
-        
+
         try {
             const files = await fs.readdir(typeDir);
-            
+
             if (files.length === 0) {
                 addWarning(`Empty directory`, typeDir);
                 continue;
@@ -179,7 +179,7 @@ async function validateBrandDirectory(brandId, brandConfig, sourceDir) {
             for (const file of files) {
                 const filePath = path.join(typeDir, file);
                 const stat = await fs.stat(filePath);
-                
+
                 if (!stat.isFile()) continue;
 
                 await validateNaming(filePath);
@@ -201,10 +201,10 @@ async function checkOrphanedDirectories(config) {
 
     try {
         const dirs = await fs.readdir(brandsDir, { withFileTypes: true });
-        
+
         for (const dir of dirs) {
             if (!dir.isDirectory()) continue;
-            
+
             if (!config.brands[dir.name]) {
                 addWarning(
                     `Orphaned brand directory (not in config)`,

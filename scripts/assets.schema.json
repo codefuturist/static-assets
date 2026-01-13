@@ -3,7 +3,11 @@
     "title": "Static Assets Configuration",
     "description": "Configuration schema for the static-assets build pipeline",
     "type": "object",
-    "required": ["sourceDir", "outputDir", "brands"],
+    "required": [
+        "sourceDir",
+        "outputDir",
+        "brands"
+    ],
     "properties": {
         "$schema": {
             "type": "string",
@@ -27,10 +31,30 @@
                     "type": "object",
                     "description": "Compression quality settings per format (0-100)",
                     "properties": {
-                        "jpg": { "type": "integer", "minimum": 1, "maximum": 100, "default": 85 },
-                        "png": { "type": "integer", "minimum": 1, "maximum": 100, "default": 90 },
-                        "webp": { "type": "integer", "minimum": 1, "maximum": 100, "default": 85 },
-                        "avif": { "type": "integer", "minimum": 1, "maximum": 100, "default": 80 }
+                        "jpg": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 85
+                        },
+                        "png": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 90
+                        },
+                        "webp": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 85
+                        },
+                        "avif": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 80
+                        }
                     }
                 },
                 "formats": {
@@ -38,14 +62,25 @@
                     "description": "Default output formats",
                     "items": {
                         "type": "string",
-                        "enum": ["original", "png", "jpg", "webp", "avif"]
+                        "enum": [
+                            "original",
+                            "png",
+                            "jpg",
+                            "webp",
+                            "avif"
+                        ]
                     },
-                    "default": ["original", "webp"]
+                    "default": [
+                        "original",
+                        "webp"
+                    ]
                 },
                 "sizes": {
                     "type": "array",
                     "description": "Default size presets",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 }
             }
         },
@@ -53,17 +88,26 @@
             "type": "object",
             "description": "Documentation of variant naming conventions",
             "properties": {
-                "description": { "type": "string" },
+                "description": {
+                    "type": "string"
+                },
                 "types": {
                     "type": "array",
                     "description": "Color/background variant suffixes",
                     "items": {
                         "type": "object",
                         "properties": {
-                            "suffix": { "type": "string" },
-                            "description": { "type": "string" }
+                            "suffix": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
                         },
-                        "required": ["suffix", "description"]
+                        "required": [
+                            "suffix",
+                            "description"
+                        ]
                     }
                 },
                 "forms": {
@@ -72,10 +116,17 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "suffix": { "type": "string" },
-                            "description": { "type": "string" }
+                            "suffix": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
                         },
-                        "required": ["suffix", "description"]
+                        "required": [
+                            "suffix",
+                            "description"
+                        ]
                     }
                 }
             }
@@ -87,32 +138,44 @@
                 "favicons": {
                     "type": "array",
                     "description": "Favicon size presets",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 },
                 "appIcons": {
                     "type": "array",
                     "description": "Mobile app icon presets",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 },
                 "logos": {
                     "type": "array",
                     "description": "Logo size presets (xs to 2xl)",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 },
                 "social": {
                     "type": "array",
                     "description": "Social media image presets",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 },
                 "hero": {
                     "type": "array",
                     "description": "Hero/banner image presets",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 },
                 "icons": {
                     "type": "array",
                     "description": "UI icon size presets",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 }
             }
         },
@@ -127,19 +190,30 @@
             "type": "object",
             "description": "SVGO optimization settings",
             "properties": {
-                "multipass": { "type": "boolean", "default": true },
+                "multipass": {
+                    "type": "boolean",
+                    "default": true
+                },
                 "plugins": {
                     "type": "array",
                     "items": {
                         "oneOf": [
-                            { "type": "string" },
+                            {
+                                "type": "string"
+                            },
                             {
                                 "type": "object",
                                 "properties": {
-                                    "name": { "type": "string" },
-                                    "params": { "type": "object" }
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "params": {
+                                        "type": "object"
+                                    }
                                 },
-                                "required": ["name"]
+                                "required": [
+                                    "name"
+                                ]
                             }
                         ]
                     }
@@ -167,15 +241,24 @@
                     "minimum": 1
                 }
             },
-            "required": ["name", "width"]
+            "required": [
+                "name",
+                "width"
+            ]
         },
         "brandConfig": {
             "type": "object",
             "description": "Configuration for a single brand",
             "properties": {
-                "logos": { "$ref": "#/definitions/assetTypeConfig" },
-                "icons": { "$ref": "#/definitions/assetTypeConfig" },
-                "images": { "$ref": "#/definitions/assetTypeConfig" }
+                "logos": {
+                    "$ref": "#/definitions/assetTypeConfig"
+                },
+                "icons": {
+                    "$ref": "#/definitions/assetTypeConfig"
+                },
+                "images": {
+                    "$ref": "#/definitions/assetTypeConfig"
+                }
             }
         },
         "assetTypeConfig": {
@@ -185,14 +268,22 @@
                 "sizes": {
                     "type": "array",
                     "description": "Size presets for this asset type",
-                    "items": { "$ref": "#/definitions/sizePreset" }
+                    "items": {
+                        "$ref": "#/definitions/sizePreset"
+                    }
                 },
                 "formats": {
                     "type": "array",
                     "description": "Output formats for this asset type",
                     "items": {
                         "type": "string",
-                        "enum": ["original", "png", "jpg", "webp", "avif"]
+                        "enum": [
+                            "original",
+                            "png",
+                            "jpg",
+                            "webp",
+                            "avif"
+                        ]
                     }
                 },
                 "generateRetina": {

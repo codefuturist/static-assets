@@ -73,7 +73,7 @@ async function prompt(question) {
 async function createBrand(brandName) {
     const brandId = toKebabCase(brandName);
     const brandTitle = toTitleCase(brandId);
-    
+
     if (!brandId) {
         log('Brand name is required', 'error');
         console.log(`\nUsage: npm run new-brand <brand-name>`);
