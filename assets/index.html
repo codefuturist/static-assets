@@ -234,12 +234,31 @@
 
     <h2>🔗 CDN Usage</h2>
 
-    <h3>GitHub Pages</h3>
-    <p><code>https://codefuturist.github.io/static-assets/assets/v1/brands/rey-it-solutions/logos/logo.svg</code></p>
+    <h3>GitHub Pages (Direct)</h3>
+    <p>Served directly from this site - no external CDN:</p>
+    <p><code>https://codefuturist.github.io/static-assets/v1/brands/rey-it-solutions/logos/logo.svg</code></p>
 
-    <h3>jsDelivr (Recommended - Faster, Cached)</h3>
+    <h3>jsDelivr CDN (Recommended - Faster, Global Cache)</h3>
+    <p>Production-ready with global edge caching:</p>
     <p><code>https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/v1/brands/rey-it-solutions/logos/logo-128.png</code>
     </p>
+
+    <h3>URL Patterns</h3>
+    <table style="width:100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+        <tr style="border-bottom: 1px solid #30363d;">
+            <th style="text-align: left; padding: 0.5rem; color: #8b949e;">Provider</th>
+            <th style="text-align: left; padding: 0.5rem; color: #8b949e;">Base URL</th>
+        </tr>
+        <tr style="border-bottom: 1px solid #21262d;">
+            <td style="padding: 0.5rem;">GitHub Pages</td>
+            <td style="padding: 0.5rem;"><code>https://codefuturist.github.io/static-assets/</code></td>
+        </tr>
+        <tr>
+            <td style="padding: 0.5rem;">jsDelivr CDN</td>
+            <td style="padding: 0.5rem;">
+                <code>https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/</code></td>
+        </tr>
+    </table>
 
     <h3>Available Sizes</h3>
     <p>All logos available in: <code>16, 32, 48, 64, 96, 128, 180, 192, 256, 512px</code></p>
@@ -254,11 +273,24 @@
     </footer>
 
     <script>
+        let currentCdn = 'jsdelivr';
+
         function copyPath(path) {
-            const fullUrl = `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/${path}`;
+            let fullUrl;
+            if (currentCdn === 'github') {
+                fullUrl = `https://codefuturist.github.io/static-assets/${path}`;
+            } else {
+                fullUrl = `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/${path}`;
+            }
             navigator.clipboard.writeText(fullUrl).then(() => {
                 alert('Copied: ' + fullUrl);
             });
+        }
+
+        function toggleCdn() {
+            currentCdn = currentCdn === 'jsdelivr' ? 'github' : 'jsdelivr';
+            document.getElementById('cdn-toggle').textContent =
+                currentCdn === 'jsdelivr' ? '📋 Copying jsDelivr URLs' : '📋 Copying GitHub Pages URLs';
         }
     </script>
 </body>
