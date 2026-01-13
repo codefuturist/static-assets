@@ -2,74 +2,74 @@
 name: CI
 
 on:
-    pull_request:
-        branches: ["main"]
-    push:
-        branches: ["main"]
-        paths:
-            - "_source/**"
-            - "assets/**"
-            - "scripts/**"
-            - "assets.config.json"
-            - "package.json"
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+    paths:
+      - "_source/**"
+      - "assets/**"
+      - "scripts/**"
+      - "assets.config.json"
+      - "package.json"
 
 env:
-    NODE_VERSION: "20"
+  NODE_VERSION: "20"
 
 jobs:
-    validate:
-        name: Validate & Build
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v6
-              with:
-                  lfs: true
+  validate:
+    name: Validate & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          lfs: true
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v6
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-                  cache: "npm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Validate asset configuration
-              run: npm run validate
+      - name: Validate asset configuration
+        run: npm run validate
 
-            - name: Build assets
-              run: npm run build
+      - name: Build assets
+        run: npm run build
 
-            - name: Verify manifest generated
-              run: |
-                  if [ ! -f "assets/assets-manifest.json" ]; then
-                    echo "❌ Manifest file not generated!"
-                    exit 1
-                  fi
-                  echo "✅ Manifest file exists"
+      - name: Verify manifest generated
+        run: |
+          if [ ! -f "assets/assets-manifest.json" ]; then
+            echo "❌ Manifest file not generated!"
+            exit 1
+          fi
+          echo "✅ Manifest file exists"
 
-            - name: Check for source file changes
-              run: |
-                  # Only check source files, scripts, and config - ignore generated assets and node_modules
-                  CHANGED_SOURCE=$(git status --porcelain | grep -E '^\s*M\s+(_source/|scripts/|assets\.config\.json|package\.json)' || true)
-                  if [ -n "$CHANGED_SOURCE" ]; then
-                    echo "❌ Build modified source files:"
-                    echo "$CHANGED_SOURCE"
-                    echo ""
-                    echo "This should not happen - build script may have a bug."
-                    exit 1
-                  fi
-                  echo "✅ Source files unchanged"
-                  
-                  # Info: Show what assets were regenerated (expected behavior)
-                  CHANGED_ASSETS=$(git status --porcelain | grep -E '^\s*M\s+assets/' || true)
-                  if [ -n "$CHANGED_ASSETS" ]; then
-                    echo "ℹ️  Assets regenerated (expected due to platform differences):"
-                    echo "$CHANGED_ASSETS" | head -5
-                    ASSET_COUNT=$(echo "$CHANGED_ASSETS" | wc -l | tr -d ' ')
-                    if [ "$ASSET_COUNT" -gt 5 ]; then
-                      echo "... and $((ASSET_COUNT - 5)) more files"
-                    fi
-                  fi
+      - name: Check for source file changes
+        run: |
+          # Only check source files, scripts, and config - ignore generated assets and node_modules
+          CHANGED_SOURCE=$(git status --porcelain | grep -E '^\s*M\s+(_source/|scripts/|assets\.config\.json|package\.json)' || true)
+          if [ -n "$CHANGED_SOURCE" ]; then
+            echo "❌ Build modified source files:"
+            echo "$CHANGED_SOURCE"
+            echo ""
+            echo "This should not happen - build script may have a bug."
+            exit 1
+          fi
+          echo "✅ Source files unchanged"
+
+          # Info: Show what assets were regenerated (expected behavior)
+          CHANGED_ASSETS=$(git status --porcelain | grep -E '^\s*M\s+assets/' || true)
+          if [ -n "$CHANGED_ASSETS" ]; then
+            echo "ℹ️  Assets regenerated (expected due to platform differences):"
+            echo "$CHANGED_ASSETS" | head -5
+            ASSET_COUNT=$(echo "$CHANGED_ASSETS" | wc -l | tr -d ' ')
+            if [ "$ASSET_COUNT" -gt 5 ]; then
+              echo "... and $((ASSET_COUNT - 5)) more files"
+            fi
+          fi
