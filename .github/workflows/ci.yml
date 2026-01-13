@@ -13,8 +13,17 @@ on:
       - "assets.config.json"
       - "package.json"
 
+# Minimum permissions required
+permissions:
+  contents: read
+
+# Prevent concurrent CI runs - cancel old ones
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "20.11.0"
 
 jobs:
   validate:
@@ -23,12 +32,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           lfs: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
