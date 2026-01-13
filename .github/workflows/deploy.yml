@@ -1,0 +1,49 @@
+# Deploy - builds and deploys to GitHub Pages on push to main
+# This is the ONLY workflow that deploys (not CI)
+name: Deploy
+
+on:
+    push:
+        branches: ["main"]
+        paths:
+            - "_source/**"
+            - "assets/**"
+            - "scripts/**"
+            - "assets.config.json"
+            - "package.json"
+            - ".github/workflows/**"
+    workflow_dispatch: # Allow manual deploys
+
+# Permissions required for Pages deployment
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+# IMPORTANT: Do NOT cancel in-progress deployments
+# This prevents the issue where rapid commits cancel active deploys
+concurrency:
+    group: pages-deploy
+    cancel-in-progress: false
+
+jobs:
+    # Build using reusable workflow
+    build:
+        name: Build
+        uses: ./.github/workflows/build.yml
+        with:
+            upload-artifact: true
+
+    # Deploy to GitHub Pages
+    deploy:
+        name: Deploy
+        needs: build
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
