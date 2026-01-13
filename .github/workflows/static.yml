@@ -19,10 +19,10 @@ permissions:
   pages: write
   id-token: write
 
-# Prevent concurrent deployments
+# Prevent concurrent deployments - cancel old ones
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: "20"
