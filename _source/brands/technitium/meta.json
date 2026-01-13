@@ -1,0 +1,31 @@
+{
+    "brand": {
+        "displayName": "Technitium",
+        "description": "Brand assets for Technitium.",
+        "tags": [
+            "technitium",
+            "dns"
+        ],
+        "aliases": [
+            "Technitium DNS"
+        ]
+    },
+    "assets": {
+        "icons": {
+            "icon": {
+                "displayName": "App Icon",
+                "description": "Primary icon for favicons and app icons.",
+                "tags": [
+                    "icon",
+                    "favicon",
+                    "app"
+                ],
+                "aliases": [
+                    "favicon",
+                    "logo icon"
+                ],
+                "sortKey": 10
+            }
+        }
+    }
+}

@@ -1,6 +1,8 @@
 # 📦 Static Assets
 
-[![Deploy to GitHub Pages](https://github.com/codefuturist/static-assets/actions/workflows/static.yml/badge.svg)](https://github.com/codefuturist/static-assets/actions/workflows/static.yml)
+<!-- markdownlint-disable MD060 -->
+
+[![Deploy to GitHub Pages](https://github.com/codefuturist/static-assets/actions/workflows/deploy.yml/badge.svg)](https://github.com/codefuturist/static-assets/actions/workflows/deploy.yml)
 
 CDN-ready public static assets with automated generation pipeline. Optimized logos, icons, and images served via **GitHub Pages** and **jsDelivr**.
 
@@ -16,10 +18,10 @@ The browser features fuzzy search, brand/type filters, format selectors, and one
 
 Assets are available from two CDNs:
 
-| CDN | Base URL | Best For |
-|-----|----------|----------|
-| **GitHub Pages** | `https://codefuturist.github.io/static-assets/` | Direct linking |
-| **jsDelivr** | `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/` | Production CDN with caching |
+| CDN              | Base URL                                                              | Best For                       |
+| ---------------- | --------------------------------------------------------------------- | ------------------------------ |
+| **GitHub Pages** | `https://codefuturist.github.io/static-assets/`                        | Direct linking                 |
+| **jsDelivr**     | `https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/`  | Production CDN with caching    |
 
 #### Example URLs
 
@@ -41,7 +43,7 @@ Assets are available from two CDNs:
 
 ## 📁 Directory Structure
 
-```
+```text
 static-assets/
 ├── _source/                    # Source files (not deployed)
 │   └── brands/
@@ -86,14 +88,14 @@ npm run build
 
 ### Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run build` | Generate all assets from source files |
-| `npm run build:brand <name>` | Build assets for a specific brand |
-| `npm run dev` | Watch mode - auto-rebuild on changes |
-| `npm run validate` | Validate source assets before building |
-| `npm run new-brand <name>` | Scaffold a new brand directory |
-| `npm run clean` | Remove generated assets |
+| Command                      | Description                            |
+| ---------------------------- | -------------------------------------- |
+| `npm run build`              | Generate all assets from source files  |
+| `npm run build:brand <name>` | Build assets for a specific brand      |
+| `npm run dev`                | Watch mode - auto-rebuild on changes   |
+| `npm run validate`           | Validate source assets before building |
+| `npm run new-brand <name>`   | Scaffold a new brand directory         |
+| `npm run clean`              | Remove generated assets                |
 
 ### Adding a New Brand
 
@@ -119,13 +121,13 @@ Or manually:
 
 ### Formats
 
-| Format | Use Case |
-|--------|----------|
-| **SVG** | Vector graphics, infinite scaling |
-| **PNG** | Transparency support, legacy browsers |
-| **WebP** | Modern browsers, smaller file size |
-| **AVIF** | Newest format, best compression |
-| **JPG** | Photos, solid backgrounds |
+| Format   | Use Case                              |
+| -------- | ------------------------------------- |
+| **SVG**  | Vector graphics, infinite scaling     |
+| **PNG**  | Transparency support, legacy browsers |
+| **WebP** | Modern browsers, smaller file size    |
+| **AVIF** | Newest format, best compression       |
+| **JPG**  | Photos, solid backgrounds             |
 
 ### Standard Sizes
 

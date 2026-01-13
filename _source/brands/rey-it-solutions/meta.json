@@ -1,0 +1,46 @@
+{
+    "brand": {
+        "displayName": "Rey IT Solutions",
+        "description": "Brand assets for Rey IT Solutions.",
+        "tags": [
+            "rey",
+            "it",
+            "solutions"
+        ],
+        "aliases": [
+            "RITS",
+            "Rey IT"
+        ]
+    },
+    "assets": {
+        "logos": {
+            "logo": {
+                "displayName": "Primary Logo",
+                "description": "Default logo (transparent).",
+                "tags": [
+                    "logo",
+                    "primary"
+                ],
+                "aliases": [
+                    "logo"
+                ],
+                "sortKey": 10
+            },
+            "logo-on-brand": {
+                "displayName": "Logo (On Brand Background)",
+                "description": "Logo rendered on the brand background color.",
+                "usage": "Use when you need a solid background treatment.",
+                "tags": [
+                    "logo",
+                    "on-brand",
+                    "background"
+                ],
+                "aliases": [
+                    "logo on brand",
+                    "logo on-color"
+                ],
+                "sortKey": 20
+            }
+        }
+    }
+}

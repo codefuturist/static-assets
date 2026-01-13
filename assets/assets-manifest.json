@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-13T16:44:08.265Z",
+  "generated": "2026-01-13T19:11:57.924Z",
   "version": "v1",
   "baseUrls": {
     "github": "https://codefuturist.github.io/static-assets/",
@@ -8,7 +8,7 @@
   "brands": [
     {
       "id": "rey-it-solutions",
-      "name": "Rey It Solutions",
+      "name": "Rey IT Solutions",
       "assetTypes": [
         {
           "type": "logos",
@@ -16,6 +16,16 @@
             {
               "id": "logo",
               "name": "Logo",
+              "displayName": "Primary Logo",
+              "description": "Default logo (transparent).",
+              "tags": [
+                "logo",
+                "primary"
+              ],
+              "aliases": [
+                "logo"
+              ],
+              "sortKey": 10,
               "type": "logos",
               "basePath": "v1/brands/rey-it-solutions/logos/logo",
               "sizes": [
@@ -283,6 +293,19 @@
             {
               "id": "logo-on-brand",
               "name": "Logo On Brand",
+              "displayName": "Logo (On Brand Background)",
+              "description": "Logo rendered on the brand background color.",
+              "usage": "Use when you need a solid background treatment.",
+              "tags": [
+                "logo",
+                "on-brand",
+                "background"
+              ],
+              "aliases": [
+                "logo on brand",
+                "logo on-color"
+              ],
+              "sortKey": 20,
               "type": "logos",
               "basePath": "v1/brands/rey-it-solutions/logos/logo-on-brand",
               "sizes": [
@@ -494,6 +517,16 @@
             }
           ]
         }
+      ],
+      "description": "Brand assets for Rey IT Solutions.",
+      "tags": [
+        "rey",
+        "it",
+        "solutions"
+      ],
+      "aliases": [
+        "RITS",
+        "Rey IT"
       ]
     },
     {
@@ -506,6 +539,18 @@
             {
               "id": "icon",
               "name": "Icon",
+              "displayName": "App Icon",
+              "description": "Primary icon for favicons and app icons.",
+              "tags": [
+                "icon",
+                "favicon",
+                "app"
+              ],
+              "aliases": [
+                "favicon",
+                "logo icon"
+              ],
+              "sortKey": 10,
               "type": "icons",
               "basePath": "v1/brands/technitium/icons/icon",
               "sizes": [
@@ -584,6 +629,14 @@
             }
           ]
         }
+      ],
+      "description": "Brand assets for Technitium.",
+      "tags": [
+        "technitium",
+        "dns"
+      ],
+      "aliases": [
+        "Technitium DNS"
       ]
     }
   ]

@@ -47,6 +47,15 @@ export interface Brand {
     /** Human-readable brand name (e.g., "Rey IT Solutions") */
     name: string;
 
+    /** Optional brand description for UI/search */
+    description?: string;
+
+    /** Optional tags to improve search/discovery */
+    tags?: string[];
+
+    /** Optional aliases/synonyms (e.g., abbreviations) */
+    aliases?: string[];
+
     /** Array of asset type categories */
     assetTypes: AssetTypeGroup[];
 }
@@ -76,6 +85,24 @@ export interface Asset {
 
     /** Human-readable asset name (e.g., "Logo On Brand") */
     name: string;
+
+    /** Preferred UI name (falls back to `name`) */
+    displayName?: string;
+
+    /** Optional short description */
+    description?: string;
+
+    /** Optional usage guidance (e.g., background constraints) */
+    usage?: string;
+
+    /** Optional tags to improve search/discovery */
+    tags?: string[];
+
+    /** Optional aliases/synonyms */
+    aliases?: string[];
+
+    /** Optional ordering hint (lower first) */
+    sortKey?: number;
 
     /** Asset type category */
     type: AssetType;

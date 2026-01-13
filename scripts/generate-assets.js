@@ -76,6 +76,46 @@ function getBaseName(filePath) {
     return path.basename(filePath, path.extname(filePath));
 }
 
+function toTitleCaseFromKebab(str) {
+    return String(str)
+        .split('-')
+        .filter(Boolean)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+}
+
+function normalizeStringArray(value) {
+    if (!value) return [];
+    const items = Array.isArray(value) ? value : [value];
+    const deduped = new Map();
+    for (const item of items) {
+        if (typeof item !== 'string') continue;
+        const trimmed = item.trim();
+        if (!trimmed) continue;
+        const key = trimmed.toLowerCase();
+        if (!deduped.has(key)) deduped.set(key, trimmed);
+    }
+    return Array.from(deduped.values());
+}
+
+function normalizeOptionalString(value) {
+    if (typeof value !== 'string') return undefined;
+    const trimmed = value.trim();
+    return trimmed ? trimmed : undefined;
+}
+
+async function readJsonIfExists(filePath) {
+    try {
+        const content = await fs.readFile(filePath, 'utf-8');
+        return JSON.parse(content);
+    } catch (err) {
+        if (err && err.code !== 'ENOENT') {
+            log(`Failed to parse JSON: ${path.relative(ROOT_DIR, filePath)}`, 'warn');
+        }
+        return null;
+    }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SVG Processing
 // ─────────────────────────────────────────────────────────────────────────────
@@ -255,12 +295,24 @@ async function generateManifest(config) {
         if (!brandEntry.isDirectory()) continue;
 
         const brandId = brandEntry.name;
+        const brandMetaPath = path.join(ROOT_DIR, config.sourceDir, 'brands', brandId, 'meta.json');
+        const brandMeta = await readJsonIfExists(brandMetaPath);
+        const brandTags = normalizeStringArray(brandMeta?.brand?.tags);
+        const brandAliases = normalizeStringArray(brandMeta?.brand?.aliases);
+        const brandDescription = normalizeOptionalString(brandMeta?.brand?.description);
+
         const brandPath = path.join(brandsDir, brandId);
         const brand = {
             id: brandId,
-            name: brandId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+            name: normalizeOptionalString(brandMeta?.brand?.displayName)
+                || normalizeOptionalString(brandMeta?.brand?.name)
+                || toTitleCaseFromKebab(brandId),
             assetTypes: []
         };
+
+        if (brandDescription) brand.description = brandDescription;
+        if (brandTags.length > 0) brand.tags = brandTags;
+        if (brandAliases.length > 0) brand.aliases = brandAliases;
 
         // Scan asset type directories (logos, icons, images)
         const assetTypeDirs = await fs.readdir(brandPath, { withFileTypes: true });
@@ -295,9 +347,26 @@ async function generateManifest(config) {
                 }
 
                 if (!assetGroups[assetName]) {
+                    const assetMeta = brandMeta?.assets?.[assetType]?.[assetName] || null;
+                    const defaultName = toTitleCaseFromKebab(assetName);
+                    const displayName = normalizeOptionalString(assetMeta?.displayName)
+                        || normalizeOptionalString(assetMeta?.name)
+                        || defaultName;
+                    const description = normalizeOptionalString(assetMeta?.description);
+                    const usage = normalizeOptionalString(assetMeta?.usage);
+                    const tags = normalizeStringArray(assetMeta?.tags);
+                    const aliases = normalizeStringArray(assetMeta?.aliases);
+                    const sortKey = Number.isFinite(assetMeta?.sortKey) ? assetMeta.sortKey : undefined;
+
                     assetGroups[assetName] = {
                         id: assetName,
-                        name: assetName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                        name: defaultName,
+                        displayName,
+                        ...(description ? { description } : {}),
+                        ...(usage ? { usage } : {}),
+                        ...(tags.length > 0 ? { tags } : {}),
+                        ...(aliases.length > 0 ? { aliases } : {}),
+                        ...(sortKey !== undefined ? { sortKey } : {}),
                         type: assetType,
                         basePath: `v1/brands/${brandId}/${assetType}/${assetName}`,
                         sizes: new Set(),
@@ -322,7 +391,14 @@ async function generateManifest(config) {
                 ...group,
                 sizes: Array.from(group.sizes).sort((a, b) => a - b),
                 formats: Array.from(group.formats).sort()
-            }));
+            })).sort((a, b) => {
+                const aKey = typeof a.sortKey === 'number' ? a.sortKey : 9999;
+                const bKey = typeof b.sortKey === 'number' ? b.sortKey : 9999;
+                if (aKey !== bKey) return aKey - bKey;
+                const aName = a.displayName || a.name || a.id;
+                const bName = b.displayName || b.name || b.id;
+                return String(aName).localeCompare(String(bName));
+            });
 
             if (assets.length > 0) {
                 brand.assetTypes.push({

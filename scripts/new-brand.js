@@ -140,6 +140,43 @@ npm run build
     await fs.writeFile(readmePath, readmeContent);
     log(`Created ${path.relative(ROOT_DIR, readmePath)}`, 'success');
 
+    // Create metadata file for better search/display names
+    const metaPath = path.join(brandSourceDir, 'meta.json');
+    const metaContent = {
+        brand: {
+            displayName: brandTitle,
+            description: "",
+            tags: [],
+            aliases: []
+        },
+        assets: {
+            logos: {
+                logo: {
+                    displayName: "Primary Logo",
+                    tags: ["primary"],
+                    aliases: ["logo"],
+                    sortKey: 10
+                },
+                "logo-on-brand": {
+                    displayName: "Logo (On Brand)",
+                    tags: ["on-brand"],
+                    aliases: ["logo on brand"],
+                    sortKey: 20
+                }
+            },
+            icons: {
+                icon: {
+                    displayName: "App Icon",
+                    tags: ["icon"],
+                    aliases: ["favicon"],
+                    sortKey: 10
+                }
+            }
+        }
+    };
+    await fs.writeFile(metaPath, JSON.stringify(metaContent, null, 2));
+    log(`Created ${path.relative(ROOT_DIR, metaPath)}`, 'success');
+
     // Update assets.config.json
     const configPath = path.join(ROOT_DIR, 'assets.config.json');
     const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));

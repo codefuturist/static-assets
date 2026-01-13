@@ -17,6 +17,45 @@ _source/
     └── images/         # Shared images
 ```
 
+## Metadata (Recommended)
+
+Each brand can optionally include a `meta.json` file to make the asset browser more user-friendly (better names, tags, aliases, and descriptions).
+
+Location:
+
+```text
+_source/brands/{brand-name}/meta.json
+```
+
+Example:
+
+```json
+{
+    "brand": {
+        "displayName": "Acme Corp",
+        "description": "Internal brand kit for Acme.",
+        "tags": ["acme", "brand"],
+        "aliases": ["acme"]
+    },
+    "assets": {
+        "logos": {
+            "logo": {
+                "displayName": "Primary Logo",
+                "tags": ["primary"],
+                "aliases": ["logo"],
+                "usage": "Use on light backgrounds.",
+                "sortKey": 10
+            }
+        }
+    }
+}
+```
+
+Notes:
+
+- Asset keys under `assets.<type>` must match the asset id (filename base, without size suffixes).
+- All fields are optional; missing metadata safely falls back to filename-derived names.
+
 ## Logo Variant Naming Convention
 
 Follow industry-standard naming to ensure all variants are properly organized:
