@@ -141,10 +141,10 @@ async function processRasterImage(inputPath, outputDir, assetConfig, globalConfi
 
             for (const format of formats) {
                 const outputFormat = format === 'original' ? inputExt : format;
-                
+
                 // Skip SVG - Sharp can't output SVG, it's handled separately by processSvg()
                 if (outputFormat === 'svg') continue;
-                
+
                 const outputName = `${baseName}${sizeSuffix}${retinaSuffix}.${outputFormat}`;
                 const outputPath = path.join(outputDir, outputName);
 

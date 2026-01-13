@@ -1,0 +1,62 @@
+# Continuous Integration - runs on PRs and pushes
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+    paths:
+      - "_source/**"
+      - "assets/**"
+      - "scripts/**"
+      - "assets.config.json"
+      - "package.json"
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  validate:
+    name: Validate & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate asset configuration
+        run: npm run validate
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Verify manifest generated
+        run: |
+          if [ ! -f "assets/assets-manifest.json" ]; then
+            echo "❌ Manifest file not generated!"
+            exit 1
+          fi
+          echo "✅ Manifest file exists"
+          
+      - name: Check for uncommitted changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Build produced uncommitted changes:"
+            git status --porcelain
+            echo ""
+            echo "Run 'npm run build' locally and commit the changes."
+            exit 1
+          fi
+          echo "✅ No uncommitted changes"
