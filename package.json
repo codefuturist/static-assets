@@ -8,7 +8,9 @@
         "build:brand": "node scripts/generate-assets.js --brand",
         "catalog": "node scripts/generate-catalog.js",
         "clean": "rm -rf assets/v1/brands/*/generated",
-        "prepare": "npm run build"
+        "prepare": "npm run build && npm run hooks:install",
+        "hooks:install": "git config core.hooksPath .githooks",
+        "hooks:uninstall": "git config --unset core.hooksPath"
     },
     "keywords": [
         "static-assets",
