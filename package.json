@@ -31,6 +31,8 @@
         "new-brand": "node scripts/new-brand.js",
         "catalog": "node scripts/generate-catalog.js",
         "clean": "rm -rf site/",
+        "deps:check": "npx npm-check-updates",
+        "deps:update": "npx npm-check-updates -u && npm install",
         "prepare": "npm run hooks:install",
         "hooks:install": "git config core.hooksPath .githooks",
         "hooks:uninstall": "git config --unset core.hooksPath",
