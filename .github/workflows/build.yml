@@ -3,67 +3,67 @@
 name: Build Assets
 
 on:
-    workflow_call:
-        inputs:
-            upload-artifact:
-                description: "Upload Pages artifact for deployment"
-                required: false
-                default: false
-                type: boolean
-            node-version:
-                description: "Node.js version to use"
-                required: false
-                default: "20.11.0"
-                type: string
-        outputs:
-            build-success:
-                description: "Whether the build succeeded"
-                value: ${{ jobs.build.outputs.success }}
+  workflow_call:
+    inputs:
+      upload-artifact:
+        description: "Upload Pages artifact for deployment"
+        required: false
+        default: false
+        type: boolean
+      node-version:
+        description: "Node.js version to use"
+        required: false
+        default: "25.2.1"
+        type: string
+    outputs:
+      build-success:
+        description: "Whether the build succeeded"
+        value: ${{ jobs.build.outputs.success }}
 
 jobs:
-    build:
-        name: Build & Validate
-        runs-on: ubuntu-latest
-        timeout-minutes: 15
-        outputs:
-            success: ${{ steps.validate.outcome == 'success' }}
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v6
-              with:
-                  lfs: true
+  build:
+    name: Build & Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      success: ${{ steps.validate.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          lfs: true
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v6
-              with:
-                  node-version: ${{ inputs.node-version }}
-                  cache: "npm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: "npm"
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Validate asset configuration
-              id: validate
-              run: npm run validate
+      - name: Validate asset configuration
+        id: validate
+        run: npm run validate
 
-            - name: Build assets
-              run: npm run build
+      - name: Build assets
+        run: npm run build
 
-            - name: Verify manifest generated
-              run: |
-                  if [ ! -f "assets/assets-manifest.json" ]; then
-                    echo "❌ Manifest file not generated!"
-                    exit 1
-                  fi
-                  echo "✅ Manifest file exists"
+      - name: Verify manifest generated
+        run: |
+          if [ ! -f "assets/assets-manifest.json" ]; then
+            echo "❌ Manifest file not generated!"
+            exit 1
+          fi
+          echo "✅ Manifest file exists"
 
-            # Only upload Pages artifact when deploying
-            - name: Setup Pages
-              if: inputs.upload-artifact
-              uses: actions/configure-pages@v5
+      # Only upload Pages artifact when deploying
+      - name: Setup Pages
+        if: inputs.upload-artifact
+        uses: actions/configure-pages@v5
 
-            - name: Upload Pages artifact
-              if: inputs.upload-artifact
-              uses: actions/upload-pages-artifact@v4
-              with:
-                  path: "./assets/"
+      - name: Upload Pages artifact
+        if: inputs.upload-artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: "./assets/"
