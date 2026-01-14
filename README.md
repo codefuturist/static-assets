@@ -154,7 +154,7 @@ manifest.brands.forEach(brand => {
 
 - [Naming Conventions](_source/README.md) - Variant and file naming standards
 - [Configuration Guide](docs/notes.md) - Detailed config options
-- [Contributing](CONTRIBUTING.md) - How to contribute
+- [Contributing](docs/CONTRIBUTING.md) - How to contribute
 
 ## 📄 License
 
