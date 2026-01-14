@@ -13,7 +13,7 @@ on:
       node-version:
         description: "Node.js version to use"
         required: false
-        default: "25.2.1"
+        default: "22"
         type: string
     outputs:
       build-success:
@@ -37,10 +37,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Validate asset configuration
         id: validate
