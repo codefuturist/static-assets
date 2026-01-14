@@ -158,11 +158,29 @@ async function processRasterImage(inputPath, outputDir, assetConfig, globalConfi
 
     // Generate size variants
     const sizeVariants = sizes.length > 0 ? sizes : [{ name: null, width: metadata.width }];
+    const useSemanticNames = globalConfig.useSemanticNames || false;
+
+    // Build a lookup from width -> semantic name from presets (for semantic naming)
+    const widthToSemanticName = new Map();
+    if (useSemanticNames && globalConfig.presets) {
+        for (const preset of Object.values(globalConfig.presets)) {
+            if (!Array.isArray(preset)) continue;
+            for (const entry of preset) {
+                if (entry.width && entry.name && !/^\d+$/.test(entry.name)) {
+                    widthToSemanticName.set(entry.width, entry.name);
+                }
+            }
+        }
+    }
 
     for (const sizeConfig of sizeVariants) {
         const width = sizeConfig.width;
         const height = sizeConfig.height;
-        const sizeSuffix = sizeConfig.name ? `-${sizeConfig.name}` : '';
+        // Use semantic name if enabled and available, otherwise fall back to configured name
+        const semanticName = useSemanticNames ? widthToSemanticName.get(width) : null;
+        const sizeSuffix = semanticName
+            ? `-${semanticName}`
+            : (sizeConfig.name ? `-${sizeConfig.name}` : '');
 
         // Skip if requested size is larger than source
         if (width > metadata.width) {
@@ -234,7 +252,14 @@ async function processBrand(brandName, brandConfig, config) {
     const sourceDir = path.join(ROOT_DIR, config.sourceDir, 'brands', brandName);
     const outputDir = path.join(ROOT_DIR, config.outputDir, 'brands', brandName);
 
-    log(`\n📦 Processing brand: ${brandName}`);
+    // Load brand metadata for display name
+    const brandMetaPath = path.join(sourceDir, 'meta.json');
+    const brandMeta = await readJsonIfExists(brandMetaPath);
+    const displayName = brandMeta?.brand?.displayName
+        || brandMeta?.brand?.name
+        || toTitleCaseFromKebab(brandName);
+
+    log(`\n📦 Processing brand: ${displayName} (${brandName})`);
 
     for (const [assetType, assetConfig] of Object.entries(brandConfig)) {
         const assetSourceDir = path.join(sourceDir, assetType);

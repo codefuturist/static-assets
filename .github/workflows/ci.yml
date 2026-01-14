@@ -2,6 +2,8 @@
 # Validates changes before merging to main
 name: CI
 
+run-name: "CI: ${{ github.event.pull_request.title || github.head_ref }}"
+
 on:
   pull_request:
     branches: ["main"]
@@ -49,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Build and verify source integrity
+      - name: Build assets and verify source integrity
         run: |
           npm run build
 

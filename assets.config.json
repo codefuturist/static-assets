@@ -2,6 +2,7 @@
     "$schema": "./scripts/assets.schema.json",
     "sourceDir": "_source",
     "outputDir": "assets/v1",
+    "useSemanticNames": false,
     "defaults": {
         "quality": {
             "jpg": 85,

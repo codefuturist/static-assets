@@ -28,12 +28,12 @@ jobs:
     outputs:
       success: ${{ steps.validate.outcome == 'success' }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v6
         with:
           lfs: true
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ inputs.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
@@ -45,10 +45,10 @@ jobs:
         id: validate
         run: npm run validate
 
-      - name: Build assets
+      - name: Generate optimized assets
         run: npm run build
 
-      - name: Verify manifest generated
+      - name: Verify assets-manifest.json exists
         run: |
           if [ ! -f "assets/assets-manifest.json" ]; then
             echo "❌ Manifest file not generated!"
@@ -57,11 +57,11 @@ jobs:
           echo "✅ Manifest file exists"
 
       # Only upload Pages artifact when deploying
-      - name: Setup Pages
+      - name: Configure GitHub Pages
         if: inputs.upload-artifact
         uses: actions/configure-pages@v5
 
-      - name: Upload Pages artifact
+      - name: Upload assets to Pages
         if: inputs.upload-artifact
         uses: actions/upload-pages-artifact@v4
         with:
