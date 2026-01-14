@@ -45,10 +45,9 @@ jobs:
         id: validate
         run: npm run validate
 
-      - name: Generate optimized assets
+      - name: Build assets and frontend
         run: npm run build
-      - name: Build frontend bundle
-        run: npm run build:frontend
+
       - name: Verify assets-manifest.json exists
         run: |
           if [ ! -f "site/assets-manifest.json" ]; then

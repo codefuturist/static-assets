@@ -9,10 +9,14 @@ on:
         branches: ["main"]
         paths:
             - "_source/**"
-            - "assets/**"
+            - "app/**"
+            - "lib/**"
             - "scripts/**"
             - "assets.config.json"
             - "package.json"
+            - "vite.config.js"
+            - "tailwind.config.js"
+            - "postcss.config.js"
             - ".github/workflows/**"
     workflow_dispatch: # Allow manual deploys
 
