@@ -21,7 +21,7 @@
         "outputDir": {
             "type": "string",
             "description": "Output directory for generated assets",
-            "default": "assets/v1"
+            "default": "site/v1"
         },
         "defaults": {
             "type": "object",

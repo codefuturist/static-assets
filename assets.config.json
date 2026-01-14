@@ -1,7 +1,7 @@
 {
     "$schema": "./scripts/assets.schema.json",
     "sourceDir": "_source",
-    "outputDir": "assets/v1",
+    "outputDir": "site/v1",
     "useSemanticNames": false,
     "defaults": {
         "quality": {

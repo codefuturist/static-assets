@@ -4,16 +4,20 @@
     "description": "CDN-ready public static assets with automated generation pipeline",
     "type": "module",
     "scripts": {
-        "build": "node scripts/generate-assets.js",
+        "build": "npm run build:assets && npm run build:frontend",
+        "build:assets": "node scripts/generate-assets.js",
+        "build:frontend": "vite build",
         "build:brand": "node scripts/generate-assets.js --brand",
-        "dev": "node scripts/watch.js",
+        "dev": "npm run build:assets && vite",
+        "dev:watch": "node scripts/watch.js",
         "validate": "node scripts/validate.js",
         "new-brand": "node scripts/new-brand.js",
         "catalog": "node scripts/generate-catalog.js",
-        "clean": "rm -rf assets/v1/brands/*/generated",
-        "prepare": "npm run build && npm run hooks:install",
+        "clean": "rm -rf site/",
+        "prepare": "npm run hooks:install",
         "hooks:install": "git config core.hooksPath .githooks",
-        "hooks:uninstall": "git config --unset core.hooksPath"
+        "hooks:uninstall": "git config --unset core.hooksPath",
+        "preview": "vite preview"
     },
     "keywords": [
         "static-assets",
@@ -23,10 +27,18 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
+        "@tailwindcss/postcss": "^4.1.18",
+        "autoprefixer": "^10.4.23",
+        "postcss": "^8.5.6",
         "sharp": "^0.34.5",
-        "svgo": "^4.0.0"
+        "svgo": "^4.0.0",
+        "tailwindcss": "^4.1.18",
+        "vite": "^7.3.1"
+    },
+    "dependencies": {
+        "fuse.js": "^7.1.0"
     },
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=20.0.0"
     }
 }

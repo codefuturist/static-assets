@@ -249,3 +249,6 @@ yarn-error.log*
 package-lock.json
 .npm
 .eslintcache
+
+# Built site folder (generated from _source/ and src/)
+site/

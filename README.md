@@ -30,15 +30,15 @@ Assets are available from two CDNs:
 <img src="https://codefuturist.github.io/static-assets/v1/brands/rey-it-solutions/logos/logo.svg" alt="Logo">
 
 <!-- jsDelivr CDN (recommended for production) -->
-<img src="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/v1/brands/rey-it-solutions/logos/logo.svg" alt="Logo">
+<img src="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/site/v1/brands/rey-it-solutions/logos/logo.svg" alt="Logo">
 ```
 
 #### Favicon Example
 
 ```html
-<link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/v1/brands/rey-it-solutions/logos/logo.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/v1/brands/rey-it-solutions/logos/logo-32.png">
-<link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/v1/brands/rey-it-solutions/logos/logo-180.png">
+<link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/site/v1/brands/rey-it-solutions/logos/logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/site/v1/brands/rey-it-solutions/logos/logo-32.png">
+<link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/site/v1/brands/rey-it-solutions/logos/logo-180.png">
 ```
 
 ## 📁 Directory Structure
@@ -52,17 +52,25 @@ static-assets/
 │       │   └── icons/
 │       └── technitium/
 │           └── icons/
-├── assets/                     # Generated output (deployed)
-│   ├── v1/brands/
+├── src/                        # Frontend source
+│   ├── index.html              # Asset browser HTML
+│   ├── main.js                 # Application logic
+│   └── styles.css              # Tailwind CSS
+├── site/                       # Built output (deployed to gh-pages)
+│   ├── v1/brands/              # Optimized brand assets
 │   │   ├── rey-it-solutions/
 │   │   └── technitium/
+│   ├── js/                     # Bundled JavaScript
+│   ├── css/                    # Bundled CSS
 │   ├── assets-manifest.json    # Asset inventory
-│   └── index.html              # Asset browser
+│   └── index.html              # Built asset browser
 ├── scripts/
-│   ├── generate-assets.js      # Build pipeline
+│   ├── generate-assets.js      # Asset generation pipeline
 │   ├── new-brand.js            # Scaffolding CLI
 │   └── validate.js             # Asset validation
-└── assets.config.json          # Configuration
+├── vite.config.js              # Vite bundler configuration
+├── tailwind.config.js          # Tailwind CSS configuration
+└── assets.config.json          # Asset generation config
 ```
 
 ## 🛠️ Development
@@ -88,14 +96,18 @@ npm run build
 
 ### Available Commands
 
-| Command                      | Description                            |
-| ---------------------------- | -------------------------------------- |
-| `npm run build`              | Generate all assets from source files  |
-| `npm run build:brand <name>` | Build assets for a specific brand      |
-| `npm run dev`                | Watch mode - auto-rebuild on changes   |
-| `npm run validate`           | Validate source assets before building |
-| `npm run new-brand <name>`   | Scaffold a new brand directory         |
-| `npm run clean`              | Remove generated assets                |
+| Command                      | Description                                     |
+| ---------------------------- | ----------------------------------------------- |
+| `npm run build`              | Build assets + frontend (production)           |
+| `npm run build:assets`       | Generate optimized assets only                  |
+| `npm run build:frontend`     | Build frontend bundle only                      |
+| `npm run build:brand <name>` | Build assets for a specific brand               |
+| `npm run dev`                | Start dev server with hot reload                |
+| `npm run dev:watch`          | Watch mode for asset changes                    |
+| `npm run validate`           | Validate source assets before building          |
+| `npm run new-brand <name>`   | Scaffold a new brand directory                  |
+| `npm run preview`            | Preview production build locally                |
+| `npm run clean`              | Remove generated assets and bundles             |
 
 ### Adding a New Brand
 
@@ -150,7 +162,49 @@ manifest.brands.forEach(brand => {
 });
 ```
 
-## 📖 Documentation
+## � Deployment
+
+This project follows a clean deployment model:
+
+1. **Develop on `main`** - All development happens on the main branch
+2. **Build locally or in CI** - `npm run build` generates the `site/` folder
+3. **Deploy to `gh-pages`** - GitHub Actions automatically deploys the `site/` folder
+4. **GitHub Pages serves** - Configured to deploy from the `gh-pages` branch
+
+### Deployment Flow
+
+```bash
+# 1. Make changes to source files in _source/
+# 2. Build the site
+npm run build
+
+# 3. Push to main (GitHub Actions handles the rest)
+git add .
+git commit -m "Update assets"
+git push origin main
+```
+
+The CI/CD pipeline automatically:
+
+- Validates source assets
+- Generates optimized assets to `site/v1/`
+- Builds the frontend to `site/`
+- Deploys `site/` folder to the `gh-pages` branch
+- GitHub Pages serves the content at [codefuturist.github.io/static-assets](https://codefuturist.github.io/static-assets/)
+
+### Manual Deployment
+
+If needed, you can manually deploy:
+
+```bash
+# Build the site
+npm run build
+
+# Deploy site/ folder to gh-pages branch
+git subtree push --prefix site origin gh-pages
+```
+
+## �📖 Documentation
 
 - [Naming Conventions](_source/README.md) - Variant and file naming standards
 - [Configuration Guide](docs/notes.md) - Detailed config options

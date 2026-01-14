@@ -47,10 +47,11 @@ jobs:
 
       - name: Generate optimized assets
         run: npm run build
-
+      - name: Build frontend bundle
+        run: npm run build:frontend
       - name: Verify assets-manifest.json exists
         run: |
-          if [ ! -f "assets/assets-manifest.json" ]; then
+          if [ ! -f "site/assets-manifest.json" ]; then
             echo "❌ Manifest file not generated!"
             exit 1
           fi
@@ -65,4 +66,4 @@ jobs:
         if: inputs.upload-artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: "./assets/"
+          path: "./site/"

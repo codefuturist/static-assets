@@ -438,8 +438,8 @@ async function generateManifest(config) {
         }
     }
 
-    // Write manifest to parent assets/ directory (where index.html lives)
-    const manifestPath = path.join(ROOT_DIR, 'assets', 'assets-manifest.json');
+    // Write manifest to site/ directory (where index.html lives)
+    const manifestPath = path.join(ROOT_DIR, 'site', 'assets-manifest.json');
     await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
     log(`Generated assets-manifest.json`, 'success');
 
