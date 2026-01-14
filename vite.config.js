@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     root: 'app',
+    base: '/static-assets/', // GitHub Pages repo subdirectory
     publicDir: '../site', // Serve site folder as public dir in dev
     build: {
         outDir: '../site',
