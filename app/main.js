@@ -15,7 +15,7 @@ let currentAsset = null;
 
 const BASE_URLS = {
     github: 'https://codefuturist.github.io/static-assets/',
-    jsdelivr: 'https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/assets/'
+    jsdelivr: 'https://cdn.jsdelivr.net/gh/codefuturist/static-assets@main/site/'
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

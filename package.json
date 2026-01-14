@@ -1,8 +1,25 @@
 {
-    "name": "static-assets",
+    "name": "@codefuturist/static-assets",
     "version": "1.0.0",
     "description": "CDN-ready public static assets with automated generation pipeline",
     "type": "module",
+    "main": "./lib/index.ts",
+    "types": "./lib/index.ts",
+    "exports": {
+        ".": {
+            "types": "./lib/index.ts",
+            "import": "./lib/index.ts"
+        },
+        "./types": {
+            "types": "./lib/types/index.ts"
+        },
+        "./types/*": {
+            "types": "./lib/types/*.ts"
+        }
+    },
+    "files": [
+        "lib"
+    ],
     "scripts": {
         "build": "npm run build:assets && npm run build:frontend",
         "build:assets": "node scripts/generate-assets.js",

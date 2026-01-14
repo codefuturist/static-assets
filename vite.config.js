@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    root: 'src',
+    root: 'app',
     publicDir: '../site', // Serve site folder as public dir in dev
     build: {
         outDir: '../site',
