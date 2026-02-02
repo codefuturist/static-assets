@@ -1,63 +1,74 @@
 {
-    "name": "@codefuturist/static-assets",
-    "version": "1.0.0",
-    "description": "CDN-ready public static assets with automated generation pipeline",
-    "type": "module",
-    "main": "./lib/index.ts",
-    "types": "./lib/index.ts",
-    "exports": {
-        ".": {
-            "types": "./lib/index.ts",
-            "import": "./lib/index.ts"
-        },
-        "./types": {
-            "types": "./lib/types/index.ts"
-        },
-        "./types/*": {
-            "types": "./lib/types/*.ts"
-        }
+  "name": "@codefuturist/static-assets",
+  "version": "1.0.0",
+  "description": "CDN-ready public static assets with automated generation pipeline",
+  "type": "module",
+  "main": "./lib/index.ts",
+  "types": "./lib/index.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.ts",
+      "import": "./lib/index.ts"
     },
-    "files": [
-        "lib"
-    ],
-    "scripts": {
-        "build": "npm run build:assets && npm run build:frontend",
-        "build:assets": "node scripts/generate-assets.js",
-        "build:frontend": "vite build",
-        "build:brand": "node scripts/generate-assets.js --brand",
-        "dev": "npm run build:assets && vite",
-        "dev:watch": "node scripts/watch.js",
-        "validate": "node scripts/validate.js",
-        "new-brand": "node scripts/new-brand.js",
-        "catalog": "node scripts/generate-catalog.js",
-        "clean": "rm -rf site/ node_modules/.vite .DS_Store *.log npm-debug.log* .npm .log",
-        "deps:check": "npx npm-check-updates",
-        "deps:update": "npx npm-check-updates -u && npm install",
-        "prepare": "npm run hooks:install",
-        "hooks:install": "git config core.hooksPath .githooks",
-        "hooks:uninstall": "git config --unset core.hooksPath",
-        "preview": "vite preview"
+    "./types": {
+      "types": "./lib/types/index.ts"
     },
-    "keywords": [
-        "static-assets",
-        "cdn",
-        "images"
-    ],
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "@tailwindcss/postcss": "^4.1.18",
-        "autoprefixer": "^10.4.23",
-        "postcss": "^8.5.6",
-        "sharp": "^0.34.5",
-        "svgo": "^4.0.0",
-        "tailwindcss": "^4.1.18",
-        "vite": "^7.3.1"
-    },
-    "dependencies": {
-        "fuse.js": "^7.1.0"
-    },
-    "engines": {
-        "node": ">=20.0.0"
+    "./types/*": {
+      "types": "./lib/types/*.ts"
     }
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "npm run build:assets && npm run build:frontend",
+    "build:assets": "node scripts/generate-assets.js",
+    "build:frontend": "vite build",
+    "build:brand": "node scripts/generate-assets.js --brand",
+    "dev": "npm run build:assets && vite",
+    "dev:watch": "node scripts/watch.js",
+    "validate": "node scripts/validate.js",
+    "new-brand": "node scripts/new-brand.js",
+    "catalog": "node scripts/generate-catalog.js",
+    "clean": "rm -rf site/ node_modules/.vite .DS_Store *.log npm-debug.log* .npm .log",
+    "deps:check": "npx npm-check-updates",
+    "deps:update": "npx npm-check-updates -u && npm install",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "hooks:uninstall": "git config --unset core.hooksPath",
+    "preview": "vite preview",
+    "format": "pnpm exec prettier --write .",
+    "format:check": "pnpm exec prettier --check .",
+    "lint": "pnpm exec eslint .",
+    "lint:fix": "pnpm exec eslint --fix .",
+    "precommit": "pnpm exec lint-staged"
+  },
+  "keywords": [
+    "static-assets",
+    "cdn",
+    "images"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@eslint/js": "^9.39.2",
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
+    "lint-staged": "^16.2.7",
+    "postcss": "^8.5.6",
+    "prettier": "^3.8.0",
+    "sharp": "^0.34.5",
+    "svgo": "^4.0.0",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "fuse.js": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }
